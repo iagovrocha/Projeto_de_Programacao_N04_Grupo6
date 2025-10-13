@@ -1,9 +1,12 @@
-## Objetivo do módulo desenvolvido (Módulo Notificação)
+# Objetivo do módulo desenvolvido (Módulo Notificação)
 
-## Bibliotecas utilizadas
+# Bibliotecas utilizadas
 
-## Instruções de execução
+# Instruções de execução
 
-## Responsabilidades de cada integrante
+## Mudanças
+Decidimos utilizar /app ao invés de /src
 
-## Prints ou exemplos de saída
+# Responsabilidades de cada integrante
+
+# Prints ou exemplos de saída
