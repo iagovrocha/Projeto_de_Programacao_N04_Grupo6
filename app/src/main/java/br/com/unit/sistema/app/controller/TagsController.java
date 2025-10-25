@@ -6,24 +6,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.unit.sistema.app.controller.dto.AtualizarTagsDTO;
 import br.com.unit.sistema.app.controller.dto.CreateTagsDTO;
-import br.com.unit.sistema.app.entity.Tags;
-import br.com.unit.sistema.app.repository.TagsRepositorys;
+import br.com.unit.sistema.app.controller.dto.ListagemTagsDTO;
 import br.com.unit.sistema.app.services.TagsService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tags")
 public class TagsController {
-
-    @Autowired
-    TagsRepositorys tagsRepositorys;
 
     @Autowired
     TagsService tagsService;
@@ -35,14 +35,17 @@ public class TagsController {
     }
 
     @GetMapping
-    public Page<Tags> listarTags(@PageableDefault(size=10) Pageable paginacao) {
-        return tagsRepositorys.findAll(paginacao);
+    public Page<ListagemTagsDTO> listarTags(@PageableDefault(size=10) Pageable paginacao) {
+        return tagsService.listarAllTags(paginacao);
     }
 
-    // @GetMapping("/{idTag}")
-    // public ResponseEntity<TagsDTO> getTag(@PathVariable long idTag) {
-    //     return new ResponseEntity<>(dummy, HttpStatus.OK);
-    // }
+    @PutMapping
+    public void atualizarTag(@RequestBody @Valid AtualizarTagsDTO dados) {
+        tagsService.atualizar(dados);
+    }
 
-
+    @DeleteMapping("/{idTag}")
+    public void removerTag(@PathVariable Long idTag) {
+        tagsService.inativarTag(idTag);
+    }
 }
