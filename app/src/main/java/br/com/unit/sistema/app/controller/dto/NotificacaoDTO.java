@@ -1,4 +1,20 @@
 package br.com.unit.sistema.app.controller.dto;
 
-public record NotificacaoDTO(long id, String titulo, String mensagem, Tipo tipo) {
+import br.com.unit.sistema.app.entity.Tipo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record NotificacaoDTO( 
+    @NotBlank
+    String titulo, 
+    
+    @NotBlank
+    String mensagem, 
+    
+    @NotNull
+    Tipo tipo
+    
+    
+    ) {
+
 } 
