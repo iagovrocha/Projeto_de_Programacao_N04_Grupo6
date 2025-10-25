@@ -2,6 +2,7 @@ package br.com.unit.sistema.app.entity;
 
 
 
+import br.com.unit.sistema.app.controller.dto.AtualizarTagsDTO;
 import br.com.unit.sistema.app.controller.dto.CreateTagsDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,25 +20,42 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "idTags")
+@EqualsAndHashCode(of = "idTag")
 public class Tags {
 
     public Tags(CreateTagsDTO dados) {
-        this.nomeTags = dados.nomeTags();
-        this.corTags = dados.corTags();
+        this.nomeTag = dados.nomeTag();
+        this.corTag = dados.corTag();
         this.ativo = true;
     }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tag")
-    private Long idTags;
+    private Long idTag;
 
     @Column(name = "nome_tag")
-    private String nomeTags;
+    private String nomeTag;
 
     @Column(name = "cor_tag")
-    private String corTags;
+    private String corTag;
 
     @Column(name = "ativo")
     private Boolean ativo;
+
+
+    public void inativar() {
+        this.ativo = false;
+    }
+
+    public void atualizarInformacoes(AtualizarTagsDTO dados) {
+       if (dados.nomeTag() != null) {
+        this.nomeTag = dados.nomeTag();
+       }
+       if (dados.corTag() != null) {
+        this.corTag = dados.corTag();
+       }
+       if (dados.ativo() != null) {
+        this.ativo = dados.ativo();
+       }
+    }
 }
