@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Pattern;
 
 public record CreateTagsDTO(
     @NotBlank
-    String nomeTags,
+    String nomeTag,
 
     @NotBlank
     @Pattern(regexp = "^#([A-Fa-f0-9]{6})$")
-    String corTags) {
+    String corTag) {
 
 }
