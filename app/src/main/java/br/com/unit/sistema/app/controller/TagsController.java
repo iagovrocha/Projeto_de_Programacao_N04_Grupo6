@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 public class TagsController {
 
     @Autowired
-    TagsService tagsService;
+    private TagsService tagsService;
 
     @PostMapping
     public ResponseEntity<CreateTagsDTO> createTag(@RequestBody @Valid CreateTagsDTO data) {

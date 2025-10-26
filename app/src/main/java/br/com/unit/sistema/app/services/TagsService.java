@@ -18,7 +18,7 @@ import br.com.unit.sistema.app.repository.TagsRepositorys;
 public class TagsService {
 
     @Autowired
-    TagsRepositorys repositorys;
+    private TagsRepositorys repositorys;
 
     @Transactional
     public void create(CreateTagsDTO dados) {
