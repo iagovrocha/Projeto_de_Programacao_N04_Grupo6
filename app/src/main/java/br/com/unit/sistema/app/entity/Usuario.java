@@ -19,18 +19,13 @@ public class Usuario {
     @Column(name = "senha")
     private String senha;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "usuario")
-    private List<NotificacaoUsuario> notificacoesRecebidas;
-
     public Usuario() {
     }
 
-    public Usuario(Long usuaroId, String email, String senha, List<NotificacaoUsuario> notificacoesRecebidas) {
+    public Usuario(Long usuaroId, String email, String senha) {
         this.usuaroId = usuaroId;
         this.email = email;
         this.senha = senha;
-        this.notificacoesRecebidas = notificacoesRecebidas;
     }
 
     public Long getUsuaroId() {
@@ -55,13 +50,5 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public List<NotificacaoUsuario> getNotificacoesRecebidas() {
-        return notificacoesRecebidas;
-    }
-
-    public void setNotificacoesRecebidas(List<NotificacaoUsuario> notificacoesRecebidas) {
-        this.notificacoesRecebidas = notificacoesRecebidas;
     }
 }

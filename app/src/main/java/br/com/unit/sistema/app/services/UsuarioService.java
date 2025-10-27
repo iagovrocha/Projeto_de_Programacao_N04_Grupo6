@@ -2,7 +2,6 @@ package br.com.unit.sistema.app.services;
 
 import br.com.unit.sistema.app.controller.dto.CriarUsuarioDto;
 import br.com.unit.sistema.app.entity.Usuario;
-import br.com.unit.sistema.app.repository.NotificacaoRepository;
 import br.com.unit.sistema.app.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +12,13 @@ import java.util.List;
 @Service
 public class UsuarioService {
     private UsuarioRepository usuarioRepository;
-    private NotificacaoRepository notificacaoRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, NotificacaoRepository notificacaoRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
-        this.notificacaoRepository = notificacaoRepository;
     }
 
     public void criarUsuario (CriarUsuarioDto criarUsuarioDto) {
-        var usuario = new Usuario(null, criarUsuarioDto.email(), criarUsuarioDto.senha(), new ArrayList<>());
+        var usuario = new Usuario(null, criarUsuarioDto.email(), criarUsuarioDto.senha());
 
         usuarioRepository.save(usuario);
     }
