@@ -1,4 +1,4 @@
-package com.projeto.semana1_projetoprog.Usuários;
+package com.projeto.semana1_projetoprog.Usuarios;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -14,6 +14,8 @@ public class Organizador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String nome;
+    private String email;
 
     // Um organizador pode organizar vários eventos
     @OneToMany(mappedBy = "organizador", cascade = CascadeType.ALL)

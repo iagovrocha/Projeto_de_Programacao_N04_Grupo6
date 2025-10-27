@@ -2,11 +2,11 @@ package com.projeto.semana1_projetoprog.Evento;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import com.projeto.semana1_projetoprog.Usuários.*;
+import com.projeto.semana1_projetoprog.Usuarios.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -22,11 +22,7 @@ public class Evento {
     private String nome;
     private String descricao;
     private String local;
-
-    private Instant horario;
-
-    @Temporal(TemporalType.DATE)
-    private Date data;
+    private LocalDateTime dataHora;
     private String status;
 
     @ManyToOne
