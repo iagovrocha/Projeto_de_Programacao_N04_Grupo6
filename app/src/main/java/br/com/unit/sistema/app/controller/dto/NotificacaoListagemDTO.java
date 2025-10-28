@@ -2,10 +2,9 @@ package br.com.unit.sistema.app.controller.dto;
 
 import br.com.unit.sistema.app.entity.Notificacao;
 
-public record NotificacaoListagemDTO(long id, String titulo, String mensagem, boolean lida, boolean status) {
+public record NotificacaoListagemDTO(long idNotificacao, String titulo, String mensagem, boolean status, long idRemetente) {
 
     public NotificacaoListagemDTO(Notificacao notificacao) {
-        this(notificacao.getId(),notificacao.getTitulo(),notificacao.getMensagem(), notificacao.isLida(), notificacao.isStatus());
-
+        this(notificacao.getIdNotificacao(),notificacao.getTitulo(),notificacao.getMensagem(),notificacao.isStatus(),notificacao.getIdRemetente());
     } 
 }
