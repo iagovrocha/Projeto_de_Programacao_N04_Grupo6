@@ -40,7 +40,7 @@ public class NotificacaoService{
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dados);
             }
             Notificacao notificacao = repository.getReferenceById(dados.id());
-            notificacao.marcarLida();
+            //notificacao.marcarLida();
             return ResponseEntity.ok(dados);
         }catch (Exception e ){
             System.out.println(e.getMessage());
