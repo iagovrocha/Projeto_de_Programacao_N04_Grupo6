@@ -23,11 +23,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Notificacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    private long idNotificacao;
+    private long idRemetente;
     private String titulo;
     private String mensagem;
-    private boolean lida;
     private boolean status;
 
     @Enumerated(EnumType.STRING)
@@ -37,12 +36,7 @@ public class Notificacao {
         this.titulo = dados.titulo();
         this.mensagem = dados.mensagem();
         this.tipo = dados.tipo();
-        this.lida = false;
         this.status = true;
-    }
-
-    public boolean marcarLida(){
-        return this.lida = true;
     }
 
 }
