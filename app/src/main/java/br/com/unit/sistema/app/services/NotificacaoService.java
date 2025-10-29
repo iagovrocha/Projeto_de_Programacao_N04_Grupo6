@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unit.sistema.app.controller.dto.NotificacaoColetaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
+import br.com.unit.sistema.app.controller.dto.NotificacaoDeletarDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoLidaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoListagemDTO;
 import br.com.unit.sistema.app.entity.Notificacao;
@@ -48,9 +49,9 @@ public class NotificacaoService{
 
     //exibir todas as notificacoes daquele usuario
     @Transactional(readOnly = true)
-    public List<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados){
+    public List<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
         List<NotificacaoListagemDTO> listaNotificacao = new ArrayList<>();
-        for (NotificacaoUsuario not : notificacaoUsuarioRepository.findAll()){
+        for (NotificacaoUsuario not : notificacaoUsuarioRepository.findAll(paginacao)){
             if(not.getIdNotificacaoUsuario().getIdUser() == dados.idUser()){
                 NotificacaoListagemDTO notificacao = new NotificacaoListagemDTO(repository.getReferenceById(not.getIdNotificacaoUsuario().getIdNotificacao()));
                 listaNotificacao.add(notificacao);
@@ -87,5 +88,15 @@ public class NotificacaoService{
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(dados);
         }
     }
+
+    //DELETE
+    //NAO ESTA DELETANDO DA TABLE NotificacaoUsuariio - CORRIGIR
+    @Transactional
+    public ResponseEntity<NotificacaoDeletarDTO> apagarNotificacao(NotificacaoDeletarDTO dados){
+        notificacaoUsuarioRepository.deleteByIdNotificacao(dados.idNotificacao());
+        repository.deleteById(dados.idNotificacao());
+
+        return ResponseEntity.notFound().build();
+        }
 
 }
