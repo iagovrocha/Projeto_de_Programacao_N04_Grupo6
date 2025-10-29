@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unit.sistema.app.controller.dto.NotificacaoColetaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
@@ -19,10 +22,7 @@ import br.com.unit.sistema.app.entity.NotificacaoUsuario;
 import br.com.unit.sistema.app.entity.NotificacaoUsuarioID;
 import br.com.unit.sistema.app.repository.NotificacaoRepository;
 import br.com.unit.sistema.app.repository.NotificacaoUsuarioRepository;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @Service
 public class NotificacaoService{
@@ -34,10 +34,12 @@ public class NotificacaoService{
     private NotificacaoUsuarioRepository notificacaoUsuarioRepository;
     
     //GET
+    @Transactional(readOnly = true)
     public Page<NotificacaoListagemDTO> coletarNotificacao(@PageableDefault Pageable paginacao){
         return repository.findAll(paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao));
     }
 
+    @Transactional(readOnly = true)
     public NotificacaoListagemDTO exibirNotificacaoEspecifica(long id){
         NotificacaoListagemDTO notificacao = new NotificacaoListagemDTO(repository.getReferenceById(id));
 
@@ -45,6 +47,7 @@ public class NotificacaoService{
     }
 
     //exibir todas as notificacoes daquele usuario
+    @Transactional(readOnly = true)
     public List<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados){
         List<NotificacaoListagemDTO> listaNotificacao = new ArrayList<>();
         for (NotificacaoUsuario not : notificacaoUsuarioRepository.findAll()){
