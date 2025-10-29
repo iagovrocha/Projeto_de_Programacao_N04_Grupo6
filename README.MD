@@ -8,12 +8,20 @@ cancelamentos)
 lote)**
 * **Permitir histórico de notificações enviadas e recebidas por usuário**
 * **Adicionar controle de status (enviado, lido, não lido)**
+* Criar repositório para persistir dados
+    * **Criar as tabelas notificacao e mensagem**
+    * **Implementar o repositório NotificacaoRepository com operações CRUD**
+    * **Criar método para registrar o envio de notificações (data, tipo e destinatário)**
+    * **Integrar com módulos de pagamento e eventos (por exemplo: pagamento confirmado → notificação enviada)**
 * Criar repositório e interface visual para visualização das notificações. **(Frontend)**
 * Testar (Criação de Teste Unitários)
 ## Bibliotecas utilizadas
 * Spring Boot - 3.5.6
     * Spring Boot Dev Tools
     * Spring Web
+    * Spring Data JPA
+    * MySQL Driver
+    * Validation 
     * Lombok
 * Java 21
 ## Instruções de execução
