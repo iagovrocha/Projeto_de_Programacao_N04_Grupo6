@@ -4,5 +4,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record NotificacaoLidaDTO(
     @NotNull
-    long id) {
+    long idNotificacao,
+    
+    @NotNull
+    long idUser) {
 }
