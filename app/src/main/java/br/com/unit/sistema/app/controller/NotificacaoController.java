@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unit.sistema.app.controller.dto.NotificacaoColetaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
+import br.com.unit.sistema.app.controller.dto.NotificacaoDeletarDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoLidaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoListagemDTO;
 import br.com.unit.sistema.app.services.NotificacaoService;
@@ -40,8 +42,8 @@ public class NotificacaoController {
     }
 
     @GetMapping("/byUser")
-    public List<NotificacaoListagemDTO> listarNotificacaoUsuario(@RequestBody @Valid NotificacaoColetaDTO dados){
-       return service.coletarNotificacaoUsuario(dados);
+    public List<NotificacaoListagemDTO> listarNotificacaoUsuario(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
+       return service.coletarNotificacaoUsuario(dados, paginacao);
     }
 
     @PostMapping
@@ -57,5 +59,10 @@ public class NotificacaoController {
     @GetMapping("/teste")
     public String teste(){
         return "Ok";
-    }    
+    }
+    
+    @DeleteMapping
+    public ResponseEntity<NotificacaoDeletarDTO> deletarNotificacao(@RequestBody NotificacaoDeletarDTO dados){
+        return service.apagarNotificacao(dados);
+    }
 }
