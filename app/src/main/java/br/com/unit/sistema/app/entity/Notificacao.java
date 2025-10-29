@@ -20,23 +20,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idNotificacao")
 public class Notificacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idNotificacao;
-    private long idRemetente;
+    private long idUser;
     private String titulo;
     private String mensagem;
-    private boolean status;
+    private boolean statusEnvio;
 
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
    
     public Notificacao(NotificacaoDTO dados) {
         this.titulo = dados.titulo();
+        this.idUser = dados.idRemetente();
         this.mensagem = dados.mensagem();
         this.tipo = dados.tipo();
-        this.status = true;
+        this.statusEnvio = true;
     }
 
 }
