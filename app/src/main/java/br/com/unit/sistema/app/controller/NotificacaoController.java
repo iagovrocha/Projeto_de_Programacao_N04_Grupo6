@@ -41,9 +41,19 @@ public class NotificacaoController {
         return service.exibirNotificacaoEspecifica(id);
     }
 
-    @GetMapping("/byUser")
-    public List<NotificacaoListagemDTO> listarNotificacaoUsuario(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
+    @GetMapping("/reciveByUser")
+    public Page<NotificacaoListagemDTO> listarNotificacaoUsuario(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
        return service.coletarNotificacaoUsuario(dados, paginacao);
+    }
+
+    @GetMapping("/sendByUser")
+    public Page<NotificacaoListagemDTO> listarNotificacaoEnviada(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
+       return service.coletarNotificacaoEnviadas(dados, paginacao);
+    }
+
+    @GetMapping("/filterTipo")
+    public Page<NotificacaoListagemDTO> filtrarNotificacao(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
+       return service.filtrarNotificacaoTipo(dados, paginacao);
     }
 
     @PostMapping
