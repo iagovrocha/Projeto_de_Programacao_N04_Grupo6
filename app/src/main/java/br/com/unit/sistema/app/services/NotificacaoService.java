@@ -49,15 +49,19 @@ public class NotificacaoService{
 
     //exibir todas as notificacoes daquele usuario
     @Transactional(readOnly = true)
-    public List<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
-        List<NotificacaoListagemDTO> listaNotificacao = new ArrayList<>();
-        for (NotificacaoUsuario not : notificacaoUsuarioRepository.findAll(paginacao)){
-            if(not.getIdNotificacaoUsuario().getIdUser() == dados.idUser()){
-                NotificacaoListagemDTO notificacao = new NotificacaoListagemDTO(repository.getReferenceById(not.getIdNotificacaoUsuario().getIdNotificacao()));
-                listaNotificacao.add(notificacao);
-            }
-        }
-        return listaNotificacao;
+    public Page<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
+
+        return notificacaoUsuarioRepository.findAllByIdUser(dados.idUser(), paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<NotificacaoListagemDTO> coletarNotificacaoEnviadas(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
+        return repository.findByIdUser(dados.idUser(), paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<NotificacaoListagemDTO> filtrarNotificacaoTipo(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
+        return repository.findByTipo(dados.tipo(), paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
     }
 
     //POST
@@ -90,7 +94,6 @@ public class NotificacaoService{
     }
 
     //DELETE
-    //NAO ESTA DELETANDO DA TABLE NotificacaoUsuariio - CORRIGIR
     @Transactional
     public ResponseEntity<NotificacaoDeletarDTO> apagarNotificacao(NotificacaoDeletarDTO dados){
         notificacaoUsuarioRepository.deleteByIdNotificacao(dados.idNotificacao());
