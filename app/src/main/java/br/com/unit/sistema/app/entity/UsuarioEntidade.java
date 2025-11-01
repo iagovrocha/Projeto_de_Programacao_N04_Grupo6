@@ -1,4 +1,5 @@
 package br.com.unit.sistema.app.entity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
