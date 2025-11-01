@@ -1,10 +1,18 @@
 package br.com.unit.sistema.app.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -13,7 +21,7 @@ import java.util.List;
 
 public class Evento {
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -21,17 +29,12 @@ public class Evento {
     private String local;
     private String data;
 
-    // Muitos eventos podem ser organizados por um organizador
-    @ManyToOne
-    @JoinColumn(name = "organizador_id")
-    private Organizador organizador;
-
-    // Um evento pode ter vários participantes e vice-versa
+    // 🔹 Muitos usuários podem estar associados a muitos eventos
     @ManyToMany
     @JoinTable(
-        name = "evento_participante",
+        name = "usuario_evento",
         joinColumns = @JoinColumn(name = "evento_id"),
-        inverseJoinColumns = @JoinColumn(name = "participante_id")
+        inverseJoinColumns = @JoinColumn(name = "usuario_id")
     )
-    private List<Participante> participantes = new ArrayList<>();
+    private List<UsuarioEntidade> usuarios = new ArrayList<>();
 }
