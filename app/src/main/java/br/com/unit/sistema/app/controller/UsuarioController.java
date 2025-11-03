@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import br.com.unit.sistema.app.controller.dto.UsuarioAutenticacaoDTO;
+import br.com.unit.sistema.app.controller.dto.UsuarioResponseDTO;
 import br.com.unit.sistema.app.entity.UsuarioEntidade;
 import br.com.unit.sistema.app.repository.UsuarioRepository;
+import br.com.unit.sistema.app.services.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -13,6 +17,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @GetMapping
     public List<UsuarioEntidade> listarTodos() {
@@ -28,6 +35,12 @@ public class UsuarioController {
     public UsuarioEntidade criarUsuario(@RequestBody UsuarioEntidade usuario) {
         return usuarioRepository.save(usuario);
     }
+
+    @PostMapping("/login")
+    public UsuarioResponseDTO fazerLogin(@RequestBody @Valid UsuarioAutenticacaoDTO dadosLogin){
+        return usuarioService.autenticarUsuario(dadosLogin);
+    }
+
 
     @PutMapping("/{id}")
     public UsuarioEntidade atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioEntidade usuarioAtualizado) {
