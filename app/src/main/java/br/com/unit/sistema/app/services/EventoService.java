@@ -1,13 +1,13 @@
 package br.com.unit.sistema.app.services;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.com.unit.sistema.app.entity.Evento;
 import br.com.unit.sistema.app.repository.EventoRepository;
-
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 
 @Service
@@ -28,7 +28,7 @@ public class EventoService {
         return repository.save(evento);
     }
 
-    public void excluir(Long id) {
+    public void deletar(Long id) {
         repository.deleteById(id);
     }
 }
