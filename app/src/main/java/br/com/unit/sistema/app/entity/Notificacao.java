@@ -1,5 +1,7 @@
 package br.com.unit.sistema.app.entity;
 
+import org.springframework.lang.Nullable;
+
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +26,9 @@ import lombok.NoArgsConstructor;
 public class Notificacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idNotificacao;
-    private long idUser;
+
+    @Nullable
+    private Long idUser;
     private String titulo;
     private String mensagem;
     private boolean statusEnvio;
