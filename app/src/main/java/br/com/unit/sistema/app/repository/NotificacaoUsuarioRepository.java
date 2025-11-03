@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import br.com.unit.sistema.app.entity.Notificacao;
 import br.com.unit.sistema.app.entity.NotificacaoUsuario;
 import br.com.unit.sistema.app.entity.NotificacaoUsuarioID;
 
@@ -16,8 +14,8 @@ public interface NotificacaoUsuarioRepository extends JpaRepository<NotificacaoU
     
     public boolean existsById(NotificacaoUsuarioID idNotificacaoUsuario);
 
-    @Query("SELECT n FROM NotificacaoUsuario nu JOIN Notificacao n ON n.idNotificacao = nu.id.idNotificacao WHERE nu.id.idUser = :idUser")
-    public Page<Notificacao> findAllByIdUser(@Param("idUser") Long idUser, Pageable paginacao);
+    @Query("SELECT nu FROM NotificacaoUsuario nu WHERE nu.id.idUser = :idUser")
+    public Page<NotificacaoUsuario> findAllByIdUser(@Param("idUser") Long idUser, Pageable paginacao);
 
     @Transactional
     @Modifying
