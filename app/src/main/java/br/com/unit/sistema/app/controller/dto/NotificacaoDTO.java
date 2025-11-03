@@ -1,6 +1,9 @@
 package br.com.unit.sistema.app.controller.dto;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.lang.Nullable;
 
 import br.com.unit.sistema.app.entity.Tipo;
 import jakarta.validation.constraints.NotBlank;
@@ -16,12 +19,12 @@ public record NotificacaoDTO(
     @NotNull
     Tipo tipo,
 
-    @NotNull
-    long idRemetente,
+    Long idRemetente,
 
     @NotNull
-    ArrayList<Long> destinatarios
+    List<Long> destinatarios
     
     ) {
+
 
 } 
