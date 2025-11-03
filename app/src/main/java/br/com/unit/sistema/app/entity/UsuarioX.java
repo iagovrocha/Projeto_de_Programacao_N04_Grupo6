@@ -1,13 +1,10 @@
 package br.com.unit.sistema.app.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class UsuarioX {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
@@ -19,10 +16,10 @@ public class Usuario {
     @Column(name = "senha")
     private String senha;
 
-    public Usuario() {
+    public UsuarioX() {
     }
 
-    public Usuario(Long usuaroId, String email, String senha) {
+    public UsuarioX(Long usuaroId, String email, String senha) {
         this.usuaroId = usuaroId;
         this.email = email;
         this.senha = senha;
