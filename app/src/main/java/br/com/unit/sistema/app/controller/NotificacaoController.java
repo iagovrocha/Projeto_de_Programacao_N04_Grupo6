@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import br.com.unit.sistema.app.controller.dto.NotificacaoColetaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDeletarDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoLidaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoListagemDTO;
+import br.com.unit.sistema.app.controller.dto.NotificacaoUsuarioListDTO;
+import br.com.unit.sistema.app.entity.Tipo;
 import br.com.unit.sistema.app.services.NotificacaoService;
 import jakarta.validation.Valid;
 
@@ -41,19 +41,19 @@ public class NotificacaoController {
         return service.exibirNotificacaoEspecifica(id);
     }
 
-    @GetMapping("/reciveByUser")
-    public Page<NotificacaoListagemDTO> listarNotificacaoUsuario(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
-       return service.coletarNotificacaoUsuario(dados, paginacao);
+    @GetMapping("/reciveByUser/{id}")
+    public Page<NotificacaoUsuarioListDTO> listarNotificacaoUsuario(@PathVariable long id, Pageable paginacao){
+       return service.coletarNotificacaoUsuario(id, paginacao);
     }
 
-    @GetMapping("/sendByUser")
-    public Page<NotificacaoListagemDTO> listarNotificacaoEnviada(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
-       return service.coletarNotificacaoEnviadas(dados, paginacao);
+    @GetMapping("/sendByUser/{id}")
+    public Page<NotificacaoListagemDTO> listarNotificacaoEnviada(@PathVariable long id, Pageable paginacao){
+       return service.coletarNotificacaoEnviadas(id, paginacao);
     }
 
-    @GetMapping("/filterTipo")
-    public Page<NotificacaoListagemDTO> filtrarNotificacao(@RequestBody @Valid NotificacaoColetaDTO dados, Pageable paginacao){
-       return service.filtrarNotificacaoTipo(dados, paginacao);
+    @GetMapping("/filterTipo/{tipo}")
+    public Page<NotificacaoListagemDTO> filtrarNotificacao(@PathVariable Tipo tipo, Pageable paginacao){
+       return service.filtrarNotificacaoTipo(tipo, paginacao);
     }
 
     @PostMapping
