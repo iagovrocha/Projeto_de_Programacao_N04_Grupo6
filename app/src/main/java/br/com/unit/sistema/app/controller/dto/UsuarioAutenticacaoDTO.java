@@ -1,10 +1,12 @@
 package br.com.unit.sistema.app.controller.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-@Getter
-@Setter
-public class UsuarioAutenticacaoDTO {
-    private String senha;
-    private String email;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record UsuarioAutenticacaoDTO (
+    @NotBlank
+    String senha,
+    @NotBlank
+    @Email
+    String email){
 }
