@@ -6,6 +6,8 @@ import br.com.unit.sistema.app.controller.dto.CriarLogNotificacaoDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,10 +31,11 @@ public class LogsNotificacao {
     private Long idLogNotificacao;
 
     private Long idNotificacao;
+
+    @Enumerated(EnumType.STRING)
     private MethodTypeLog method;
     private String func_name;
 
-    @Nullable
     @Column(name = "id_user")
     private Long idUser;
 
