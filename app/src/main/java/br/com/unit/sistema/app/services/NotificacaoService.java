@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unit.sistema.app.controller.dto.CriarLogNotificacaoDTO;
-import br.com.unit.sistema.app.controller.dto.NotificacaoColetaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoDeletarDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoLidaDTO;
 import br.com.unit.sistema.app.controller.dto.NotificacaoListagemDTO;
+import br.com.unit.sistema.app.controller.dto.NotificacaoUsuarioListDTO;
 import br.com.unit.sistema.app.entity.LogsNotificacao;
 import br.com.unit.sistema.app.entity.MethodTypeLog;
 import br.com.unit.sistema.app.entity.Notificacao;
@@ -49,8 +49,8 @@ public class NotificacaoService{
         salvarNotificacao(new NotificacaoDTO(
         "Novo Pagamento Realizado", 
         "Pagamento: "+dados.getIdPagamento()+
-        "\nValor: "+dados.getValor()+
-        "\nData"+dados.getDataPagamento(),  
+        "Valor: "+dados.getValor()+
+        "Data"+dados.getDataPagamento(),  
         tipo,
         null , 
         Arrays.asList(dados.getIdUsuario())));
@@ -81,22 +81,23 @@ public class NotificacaoService{
 
     //exibir todas as notificacoes daquele usuario
     @Transactional(readOnly = true)
-    public Page<NotificacaoListagemDTO> coletarNotificacaoUsuario(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
+    public Page<NotificacaoUsuarioListDTO> coletarNotificacaoUsuario(long id, @PageableDefault Pageable paginacao){
         
 
-        return notificacaoUsuarioRepository.findAllByIdUser(dados.idUser(), paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao));
+        return notificacaoUsuarioRepository
+        .findAllByIdUser(id, paginacao).map(notificacao -> new  NotificacaoUsuarioListDTO(repository.getReferenceById(notificacao.getIdNotificacaoUsuario().getIdNotificacao()), notificacao.isLida()));
     }
 
     //coleta notificações que um usuário enviou
     @Transactional(readOnly = true)
-    public Page<NotificacaoListagemDTO> coletarNotificacaoEnviadas(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
-        return repository.findByIdUser(dados.idUser(), paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
+    public Page<NotificacaoListagemDTO> coletarNotificacaoEnviadas(long id, @PageableDefault Pageable paginacao){
+        return repository.findByIdUser(id, paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
     }
 
     //filtra notificação pelo tipo
     @Transactional(readOnly = true)
-    public Page<NotificacaoListagemDTO> filtrarNotificacaoTipo(NotificacaoColetaDTO dados, @PageableDefault Pageable paginacao){
-        return repository.findByTipo(dados.tipo(), paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
+    public Page<NotificacaoListagemDTO> filtrarNotificacaoTipo(Tipo tipo, @PageableDefault Pageable paginacao){
+        return repository.findByTipo(tipo, paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
     }
 
     //POST
