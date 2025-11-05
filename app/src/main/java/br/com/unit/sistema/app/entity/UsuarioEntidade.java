@@ -1,6 +1,8 @@
 package br.com.unit.sistema.app.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,4 +23,6 @@ public class UsuarioEntidade {
     private String email;
     private String nome;
     private String senha;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
