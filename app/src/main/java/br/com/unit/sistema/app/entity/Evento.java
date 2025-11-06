@@ -3,6 +3,7 @@ package br.com.unit.sistema.app.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +24,13 @@ public class Evento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String nome;
     private String local;
     private String data;
-
+    private Long idUser;
     // 🔹 Muitos usuários podem estar associados a muitos eventos
     @ManyToMany
     @JoinTable(
