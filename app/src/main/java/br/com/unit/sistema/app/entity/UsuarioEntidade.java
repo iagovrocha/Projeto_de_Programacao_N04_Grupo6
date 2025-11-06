@@ -1,9 +1,11 @@
 package br.com.unit.sistema.app.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Getter;
@@ -14,12 +16,14 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "usuario")
 public class UsuarioEntidade {
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "id_user")
     private long id;
+    
     private String email;
     private String nome;
     private String senha;
