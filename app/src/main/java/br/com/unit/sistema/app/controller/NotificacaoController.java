@@ -31,23 +31,23 @@ public class NotificacaoController {
     @Autowired
     private NotificacaoService service;
 
-    @GetMapping
-    public Page<NotificacaoListagemDTO> listarNotificacao(Pageable paginacao){
-       return service.coletarNotificacao(paginacao);
+    @GetMapping("{id}")
+    public ResponseEntity listarNotificacao(@PathVariable long id, Pageable paginacao){
+       return service.coletarNotificacao(id, paginacao);
     }
 
-    @GetMapping("/{id}")
-    public NotificacaoListagemDTO mostrarNotificacaoEspecifica(@PathVariable long id){
+    @GetMapping("/openNot/{id}")
+    public ResponseEntity mostrarNotificacaoEspecifica(@PathVariable long id){
         return service.exibirNotificacaoEspecifica(id);
     }
 
     @GetMapping("/reciveByUser/{id}")
-    public Page<NotificacaoUsuarioListDTO> listarNotificacaoUsuario(@PathVariable long id, Pageable paginacao){
+    public ResponseEntity listarNotificacaoUsuario(@PathVariable long id, Pageable paginacao){
        return service.coletarNotificacaoUsuario(id, paginacao);
     }
 
     @GetMapping("/sendByUser/{id}")
-    public Page<NotificacaoListagemDTO> listarNotificacaoEnviada(@PathVariable long id, Pageable paginacao){
+    public ResponseEntity listarNotificacaoEnviada(@PathVariable long id, Pageable paginacao){
        return service.coletarNotificacaoEnviadas(id, paginacao);
     }
 
@@ -66,13 +66,18 @@ public class NotificacaoController {
         return service.atualizarNotificacao(dados);
     }
 
+    @PutMapping("/tag")
+    public ResponseEntity atualizarTagNotificacao(@RequestBody @Valid NotificacaoLidaDTO dados){
+        return service.atualizarTag(dados);
+    }
+
     @GetMapping("/teste")
     public String teste(){
         return "Ok";
     }
     
     @DeleteMapping
-    public ResponseEntity<NotificacaoDeletarDTO> deletarNotificacao(@RequestBody NotificacaoDeletarDTO dados){
+    public ResponseEntity deletarNotificacao(@RequestBody NotificacaoDeletarDTO dados){
         return service.apagarNotificacao(dados);
     }
 }
