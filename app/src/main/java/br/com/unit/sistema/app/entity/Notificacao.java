@@ -35,6 +35,7 @@ public class Notificacao {
     private String titulo;
     private String mensagem;
     private boolean statusEnvio;
+    private Long idTag;
 
     @Column(name = "data_horario_envio")
     private LocalDateTime dataHorarioEnvio;
@@ -49,6 +50,11 @@ public class Notificacao {
         this.tipo = dados.tipo();
         this.statusEnvio = true;
         this.dataHorarioEnvio = LocalDateTime.now();
+        this.idTag = dados.idTag();
+    }
+
+    public void definirTag(Long idTag){
+        this.idTag = idTag;
     }
 
 }
