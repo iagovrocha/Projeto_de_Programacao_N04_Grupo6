@@ -4,11 +4,13 @@ package br.com.unit.sistema.app.services;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,7 @@ import br.com.unit.sistema.app.entity.Notificacao;
 import br.com.unit.sistema.app.entity.NotificacaoUsuario;
 import br.com.unit.sistema.app.entity.NotificacaoUsuarioID;
 import br.com.unit.sistema.app.entity.Pagamentos;
+import br.com.unit.sistema.app.entity.Preferencia;
 import br.com.unit.sistema.app.entity.Role;
 import br.com.unit.sistema.app.entity.Tipo;
 import br.com.unit.sistema.app.entity.UsuarioEntidade;
@@ -58,6 +61,9 @@ public class NotificacaoService{
 
     @Autowired
     private JavaMailSender senderEmail;
+
+    @Autowired
+    private PreferenciaService prefServ;
     
     public void gerarLogNotificacao(CriarLogNotificacaoDTO dados){
 
@@ -107,6 +113,52 @@ public class NotificacaoService{
         }
         return ResponseEntity.ok(notificacaoUsuarioRepository
         .findAllByIdUser(id, paginacao).map(notificacao -> 
+            new  NotificacaoUsuarioListDTO(repository.getReferenceById(notificacao.getIdNotificacaoUsuario().getIdNotificacao()),
+            notificacao.isLida())));
+    }
+
+    //Exibe notificacoes novas do usuario com preferencia
+    public Page<NotificacaoUsuario> gerarPageNotificacaoUsuario(ArrayList<NotificacaoUsuario> lista, Pageable paginacao){
+        int comeco = (int) paginacao.getOffset();
+        int fim = Math.min(comeco   + paginacao.getPageSize(), lista.size());
+
+        List<NotificacaoUsuario> subLista = lista.subList(comeco, fim);
+
+
+        return new PageImpl<>(subLista,paginacao, lista.size());
+    }
+
+    public ArrayList<NotificacaoUsuario> ordenarListaNotificacaoUsuario(long id,ArrayList<Long> lista, Pageable paginacao){
+        ArrayList<NotificacaoUsuario> listaOrdenada = new ArrayList<>();
+        lista.sort(Comparator.naturalOrder());
+        List<Preferencia> listaPref = prefServ.listarPrefUser(id, paginacao).getContent();
+        int count = 0;
+        if (listaPref.isEmpty() == true){
+            for (Long idNot : lista){
+                listaOrdenada.add(0,notificacaoUsuarioRepository.getReferencedByIdUN(id, idNot));
+            }
+            return listaOrdenada;
+        }
+        for (Long idNot : lista){
+            Notificacao not = repository.getReferenceById(idNot);
+            for (Preferencia pref : listaPref){
+                if (pref.getTipo().equals(not.getTipo())){
+                    listaOrdenada.add(0,notificacaoUsuarioRepository.getReferencedByIdUN(id, idNot));
+                    count++;
+                }else{
+                    listaOrdenada.add(count,notificacaoUsuarioRepository.getReferencedByIdUN(id, idNot));
+                }
+            }
+        }
+        return listaOrdenada;
+    }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity exibirNotificacaoNLida(long id, @PageableDefault Pageable paginacao){
+        ArrayList<NotificacaoUsuario> lista = ordenarListaNotificacaoUsuario(id, notificacaoUsuarioRepository.findNewByIdUser(id), paginacao);
+        
+        Page<NotificacaoUsuario> notUserPage = gerarPageNotificacaoUsuario(lista,paginacao);
+        return ResponseEntity.ok().body(notUserPage.map(notificacao -> 
             new  NotificacaoUsuarioListDTO(repository.getReferenceById(notificacao.getIdNotificacaoUsuario().getIdNotificacao()),
             notificacao.isLida())));
     }
