@@ -36,6 +36,11 @@ public class NotificacaoController {
        return service.coletarNotificacao(id, paginacao);
     }
 
+    @GetMapping("/all/{idUsuario}")
+    public ResponseEntity listarTodasNotificacoes(@PathVariable long idUsuario, Pageable paginacao){
+       return service.buscarTodasNotificacoes(idUsuario, paginacao);
+    }
+
     @GetMapping("/openNot/{id}")
     public ResponseEntity mostrarNotificacaoEspecifica(@PathVariable long id){
         return service.exibirNotificacaoEspecifica(id);

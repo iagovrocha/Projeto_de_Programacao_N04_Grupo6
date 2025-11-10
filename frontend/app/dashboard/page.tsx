@@ -25,6 +25,8 @@ interface User {
 export default function Dashboard() {
   const [user, setUser] = useState<User | null>(null)
   const [notifications, setNotifications] = useState<Notification[]>([])
+  const [myEventsCount, setMyEventsCount] = useState(0)
+  const [availableEventsCount, setAvailableEventsCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -39,6 +41,8 @@ export default function Dashboard() {
     const parsedUser = JSON.parse(userStr)
     setUser(parsedUser)
     fetchNotifications(parsedUser.id)
+    fetchMyEventsCount(parsedUser.id)
+    fetchAvailableEventsCount()
   }, [router])
 
   const fetchNotifications = async (userId: string) => {
@@ -55,6 +59,32 @@ export default function Dashboard() {
       console.error("Failed to fetch notifications:", err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchMyEventsCount = async (userId: string) => {
+    try {
+      // Busca eventos em que o usuário está inscrito
+      const response = await fetch(`http://localhost:8080/eventos/eventosinscritos/${userId}`)
+      if (response.ok) {
+        const data = await response.json()
+        setMyEventsCount(Array.isArray(data) ? data.length : 0)
+      }
+    } catch (err) {
+      console.error("Failed to fetch my events count:", err)
+    }
+  }
+
+  const fetchAvailableEventsCount = async () => {
+    try {
+      // Busca todos os eventos disponíveis
+      const response = await fetch("http://localhost:8080/eventos")
+      if (response.ok) {
+        const data = await response.json()
+        setAvailableEventsCount(Array.isArray(data) ? data.length : 0)
+      }
+    } catch (err) {
+      console.error("Failed to fetch available events count:", err)
     }
   }
 
@@ -136,15 +166,15 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">My Events</h3>
-                <p className="text-3xl font-bold text-primary">5</p>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Minhas Inscrições</h3>
+                <p className="text-3xl font-bold text-primary">{myEventsCount}</p>
               </div>
               <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">Available Events</h3>
-                <p className="text-3xl font-bold text-accent">12</p>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Eventos Disponíveis</h3>
+                <p className="text-3xl font-bold text-foreground">{availableEventsCount}</p>
               </div>
               <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">Unread Notifications</h3>
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Notificações Não Lidas</h3>
                 <p className="text-3xl font-bold text-destructive">{notifications.filter((n) => !n.lida).length}</p>
               </div>
             </div>

@@ -54,7 +54,7 @@ export default function AdminNotificationsPage() {
     try {
       setLoading(true)
       const response = await fetch(
-        `http://localhost:8080/notificacao?page=${page}&size=10&sort=idNotificacao,desc`,
+        `http://localhost:8080/notificacao/all/${userId}?page=${page}&size=10&sort=idNotificacao,desc`,
         {
           headers: {
             "Content-Type": "application/json",
