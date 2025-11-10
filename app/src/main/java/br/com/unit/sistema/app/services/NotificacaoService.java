@@ -1,19 +1,19 @@
 package br.com.unit.sistema.app.services;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +28,6 @@ import br.com.unit.sistema.app.entity.MethodTypeLog;
 import br.com.unit.sistema.app.entity.Notificacao;
 import br.com.unit.sistema.app.entity.NotificacaoUsuario;
 import br.com.unit.sistema.app.entity.NotificacaoUsuarioID;
-import br.com.unit.sistema.app.entity.Pagamentos;
 import br.com.unit.sistema.app.entity.Preferencia;
 import br.com.unit.sistema.app.entity.Role;
 import br.com.unit.sistema.app.entity.Tipo;
@@ -39,8 +38,6 @@ import br.com.unit.sistema.app.repository.NotificacaoUsuarioRepository;
 import br.com.unit.sistema.app.repository.TagsRepositorys;
 import br.com.unit.sistema.app.repository.UsuarioRepository;
 import jakarta.validation.Valid;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 @Service
 public class NotificacaoService{
     
@@ -92,6 +89,24 @@ public class NotificacaoService{
         }
         
         return ResponseEntity.ok(repository.findAll(paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao)));
+    }
+
+    //GET ALL - novo método que valida o usuário e retorna todas as notificações
+    @Transactional(readOnly = true)
+    public ResponseEntity buscarTodasNotificacoes(long idUsuario, @PageableDefault Pageable paginacao){
+        // Verifica se o usuário existe
+        if(!userRepository.existsById(idUsuario)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+        
+        // Busca o usuário e valida se é ADMINISTRADOR
+        UsuarioEntidade usuario = userRepository.getReferenceById(idUsuario);
+        if(usuario.getRole() != Role.ADMINISTRADOR){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado. Apenas administradores podem acessar este recurso.");
+        }
+        
+        // Retorna todas as notificações paginadas
+        return ResponseEntity.ok(repository.findAll(paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao)));
     }
 
     //exibe uma notificação específica
