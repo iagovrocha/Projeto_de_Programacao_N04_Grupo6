@@ -73,4 +73,13 @@ public class EventoService {
     public List<Evento> buscarEventosInscritosPorUsuario(Long idUsuario) {
         return repository.findEventosByUsuarioId(idUsuario);
     }
+
+    public List<Long> buscarIdsUsuariosInscritosPorEvento(Long idEvento) {
+        Evento evento = repository.findById(idEvento)
+            .orElseThrow(() -> new RuntimeException("Evento não encontrado"));
+        
+        return evento.getUsuarios().stream()
+            .map(usuario -> usuario.getId())
+            .toList();
+    }
 }

@@ -95,4 +95,15 @@ public class EventoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/{id}/inscritos")
+    public ResponseEntity<List<Long>> listarIdUsuariosInscritos(@PathVariable Long id) {
+        try {
+            List<Long> idsUsuarios = eventoService.buscarIdsUsuariosInscritosPorEvento(id);
+            return ResponseEntity.ok(idsUsuarios);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
+    

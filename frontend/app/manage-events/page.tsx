@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation"
 import Sidebar from "@/components/sidebar"
 import Navbar from "@/components/navbar"
 import EditEventModal from "@/components/edit-event-modal"
-import { Edit, Trash2 } from "lucide-react"
+import CreateNotificationModal from "@/components/create-notification-modal"
+import { Edit, Trash2, Bell } from "lucide-react"
 
 interface Event {
   id: string
@@ -30,6 +31,7 @@ export default function ManageEventsPage() {
   const [currentPage, setCurrentPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const itemsPerPage = 5
   const router = useRouter()
@@ -105,8 +107,18 @@ export default function ManageEventsPage() {
     setIsEditModalOpen(true)
   }
 
+  const handleNotificationClick = (event: Event) => {
+    setSelectedEvent(event)
+    setIsNotificationModalOpen(true)
+  }
+
   const handleCloseModal = () => {
     setIsEditModalOpen(false)
+    setSelectedEvent(null)
+  }
+
+  const handleCloseNotificationModal = () => {
+    setIsNotificationModalOpen(false)
     setSelectedEvent(null)
   }
 
@@ -114,6 +126,10 @@ export default function ManageEventsPage() {
     if (user) {
       fetchEvents(user.id)
     }
+  }
+
+  const handleNotificationCreated = () => {
+    // Refresh pode ser necessário ou apenas fechar o modal
   }
 
   const handleDelete = async (eventId: string) => {
@@ -188,14 +204,23 @@ export default function ManageEventsPage() {
 
                     <div className="flex gap-2 ml-4">
                       <button 
+                        onClick={() => handleNotificationClick(event)}
+                        className="p-2 hover:bg-primary/10 rounded-lg text-primary"
+                        title="Criar notificação para inscritos"
+                      >
+                        <Bell size={20} />
+                      </button>
+                      <button 
                         onClick={() => handleEditClick(event)}
                         className="p-2 hover:bg-secondary rounded-lg text-foreground"
+                        title="Editar evento"
                       >
                         <Edit size={20} />
                       </button>
                       <button
                         onClick={() => handleDelete(event.id)}
                         className="p-2 hover:bg-destructive/10 rounded-lg text-destructive"
+                        title="Deletar evento"
                       >
                         <Trash2 size={20} />
                       </button>
@@ -260,12 +285,20 @@ export default function ManageEventsPage() {
       </div>
 
       {selectedEvent && (
-        <EditEventModal
-          event={selectedEvent}
-          isOpen={isEditModalOpen}
-          onClose={handleCloseModal}
-          onEventUpdated={handleEventUpdated}
-        />
+        <>
+          <EditEventModal
+            event={selectedEvent}
+            isOpen={isEditModalOpen}
+            onClose={handleCloseModal}
+            onEventUpdated={handleEventUpdated}
+          />
+          <CreateNotificationModal
+            event={selectedEvent}
+            isOpen={isNotificationModalOpen}
+            onClose={handleCloseNotificationModal}
+            onNotificationCreated={handleNotificationCreated}
+          />
+        </>
       )}
     </div>
   )

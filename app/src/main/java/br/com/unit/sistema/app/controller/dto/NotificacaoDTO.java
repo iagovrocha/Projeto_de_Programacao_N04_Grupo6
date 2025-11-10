@@ -31,8 +31,7 @@ public record NotificacaoDTO(
     public NotificacaoDTO(Pagamentos dados, Tipo tipo){
         this("Novo Pagamento Realizado ", 
         "Pagamento: "+dados.getIdPagamento()+
-        " Valor: R$"+dados.getValor()+
-        " Data: "+dados.getDataPagamento(), 
+        " Valor: R$"+dados.getValor(),
         tipo,
         null,
         Arrays.asList(dados.getIdUsuario()),
