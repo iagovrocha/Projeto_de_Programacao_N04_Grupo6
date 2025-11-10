@@ -1,8 +1,11 @@
 package br.com.unit.sistema.app.entity;
 
+import java.time.LocalDateTime;
+
 import org.springframework.lang.Nullable;
 
 import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,6 +35,10 @@ public class Notificacao {
     private String titulo;
     private String mensagem;
     private boolean statusEnvio;
+    private Long idTag;
+
+    @Column(name = "data_horario_envio")
+    private LocalDateTime dataHorarioEnvio;
 
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
@@ -42,6 +49,12 @@ public class Notificacao {
         this.mensagem = dados.mensagem();
         this.tipo = dados.tipo();
         this.statusEnvio = true;
+        this.dataHorarioEnvio = LocalDateTime.now();
+        this.idTag = dados.idTag();
+    }
+
+    public void definirTag(Long idTag){
+        this.idTag = idTag;
     }
 
 }

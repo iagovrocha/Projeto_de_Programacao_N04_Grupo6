@@ -5,15 +5,17 @@ import { Bell } from "lucide-react"
 
 interface Notification {
   idNotificacao: string
+  titulo: string
   mensagem: string
-  tipo: string
-  createdAt: string
+  horario: string
   lida: boolean
+  tipo: string
+  tag?: string
 }
 
 interface User {
   id: string
-  name: string
+  nome: string
   email: string
   role: string
 }
@@ -39,10 +41,12 @@ export default function Navbar({ userName }: NavbarProps) {
 
   const fetchNotifications = async (userId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/notificacao/byUser/${userId}`)
+      const response = await fetch(
+        `http://localhost:8080/notificacao/reciveByUser/${userId}?page=0&size=5&sort=idNotificacaoUsuario.idNotificacao,desc`
+      )
       if (response.ok) {
         const data = await response.json()
-        setNotifications(data)
+        setNotifications(data.content || [])
       }
     } catch (err) {
       console.error("Failed to fetch notifications:", err)
@@ -101,18 +105,42 @@ export default function Navbar({ userName }: NavbarProps) {
                 {notifications.map((notif) => (
                   <div
                     key={notif.idNotificacao}
-                    className={`p-3 border-b border-border hover:bg-secondary/50 transition cursor-pointer flex justify-between items-start gap-2 ${
+                    className={`p-3 border-b border-border hover:bg-secondary/50 transition cursor-pointer ${
                       !notif.lida ? "bg-primary/5" : ""
                     }`}
                     onClick={() => handleMarkAsRead(notif.idNotificacao)}
                   >
-                    <div className="flex-1">
-                      <p className="text-sm text-foreground">{notif.mensagem}</p>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(notif.createdAt).toLocaleDateString()}
+                    <div className="flex justify-between items-start gap-2 mb-1">
+                      <h4 className="text-sm font-semibold text-foreground">{notif.titulo}</h4>
+                      {!notif.lida && <div className="w-2 h-2 bg-primary rounded-full mt-1 flex-shrink-0"></div>}
+                    </div>
+                    <p className="text-sm text-foreground mb-2">{notif.mensagem}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
+                        notif.tipo === "ALERTA"
+                          ? "bg-red-200 text-red-800"
+                          : notif.tipo === "AVISO"
+                            ? "bg-yellow-200 text-yellow-800"
+                            : notif.tipo === "CONFIRMACAO"
+                              ? "bg-green-200 text-green-800"
+                              : "bg-blue-200 text-blue-800"
+                      }`}>
+                        {notif.tipo}
+                      </span>
+                      {notif.tag && (
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-purple-200 text-purple-800 font-medium">
+                          {notif.tag}
+                        </span>
+                      )}
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {new Date(notif.horario).toLocaleString('pt-BR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </span>
                     </div>
-                    {!notif.lida && <div className="w-2 h-2 bg-primary rounded-full mt-1"></div>}
                   </div>
                 ))}
               </div>

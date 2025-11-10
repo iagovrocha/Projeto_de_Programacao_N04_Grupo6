@@ -1,15 +1,18 @@
 package br.com.unit.sistema.app.controller.dto;
 
-import jakarta.validation.constraints.Email;
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record UsuarioDTO (
-    @NotNull
-    Long id,
+public record EventoUpdateDTO(
     @NotBlank
     String nome,
+    
     @NotBlank
-    @Email
-    String email){
+    String local,
+    
+    @NotNull
+    LocalDateTime data
+) {
 }

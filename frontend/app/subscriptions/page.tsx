@@ -4,21 +4,20 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Sidebar from "@/components/sidebar"
 import Navbar from "@/components/navbar"
-import { Calendar, MapPin, Users, Trash2 } from "lucide-react"
+import { Calendar, MapPin, Trash2 } from "lucide-react"
 
 interface Event {
-  id: string
-  title: string
-  description: string
-  date: string
-  location: string
-  capacity: number
-  enrolledCount: number
+  id: number
+  nome: string
+  local: string
+  data: string
+  idUser: number
+  preco: number
 }
 
 interface User {
   id: string
-  name: string
+  nome: string
   email: string
   role: string
 }
@@ -44,7 +43,7 @@ export default function SubscriptionsPage() {
 
   const fetchSubscriptions = async (userId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/subscriptions?userId=${userId}`)
+      const response = await fetch(`http://localhost:8080/eventos/eventosinscritos/${userId}`)
       if (response.ok) {
         const data = await response.json()
         setEvents(data)
@@ -56,22 +55,29 @@ export default function SubscriptionsPage() {
     }
   }
 
-  const handleUnenroll = async (eventId: string) => {
+  const handleUnenroll = async (eventId: number) => {
     const userStr = localStorage.getItem("user")
     if (!userStr) return
 
     const parsedUser = JSON.parse(userStr)
-    try {
-      const response = await fetch(`http://localhost:8080/api/events/${eventId}/unenroll?userId=${parsedUser.id}`, {
-        method: "POST",
-      })
-      if (response.ok) {
-        alert("Successfully unrolled from event")
-        fetchSubscriptions(parsedUser.id)
+    
+    if (confirm("Tem certeza que deseja cancelar sua inscrição neste evento?")) {
+      try {
+        // TODO: Implementar endpoint de desinscrição no backend
+        alert("Funcionalidade de desinscrição em desenvolvimento")
+        // const response = await fetch(`http://localhost:8080/eventos/desinscrever`, {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({ idUsuario: parsedUser.id, idEvento: eventId })
+        // })
+        // if (response.ok) {
+        //   alert("Inscrição cancelada com sucesso")
+        //   fetchSubscriptions(parsedUser.id)
+        // }
+      } catch (err) {
+        console.error("Failed to unenroll:", err)
+        alert("Falha ao cancelar inscrição")
       }
-    } catch (err) {
-      console.error("Failed to unenroll:", err)
-      alert("Failed to unenroll from event")
     }
   }
 
@@ -87,11 +93,11 @@ export default function SubscriptionsPage() {
     <div className="flex h-screen">
       <Sidebar userType={user.role} />
       <div className="flex-1 ml-64 flex flex-col">
-        <Navbar userName={user.name} />
+        <Navbar userName={user.nome} />
         <main className="flex-1 overflow-auto p-6 bg-background">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground">My Events</h2>
-            <p className="text-muted-foreground mt-2">Events you are enrolled in</p>
+            <h2 className="text-2xl font-bold text-foreground">Minhas Inscrições</h2>
+            <p className="text-muted-foreground mt-2">Eventos nos quais você está inscrito</p>
           </div>
 
           {events.length > 0 ? (
@@ -102,21 +108,34 @@ export default function SubscriptionsPage() {
                   className="bg-card rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-lg transition"
                 >
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-foreground mb-2">{event.title}</h3>
-                    <p className="text-sm text-muted-foreground mb-4">{event.description}</p>
-
+                    <h3 className="text-lg font-bold text-foreground mb-2">{event.nome}</h3>
+                    
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar size={16} />
-                        {new Date(event.date).toLocaleDateString()}
+                        {new Date(event.data).toLocaleString('pt-BR', {
+                          day: '2-digit',
+                          month: '2-digit', 
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <MapPin size={16} />
-                        {event.location}
+                        {event.local}
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Users size={16} />
-                        {event.enrolledCount} / {event.capacity} enrolled
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        {event.preco === 0 ? (
+                          <span className="text-green-600">GRATUITO</span>
+                        ) : (
+                          <span>
+                            {new Intl.NumberFormat('pt-BR', { 
+                              style: 'currency', 
+                              currency: 'BRL' 
+                            }).format(event.preco)}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -125,7 +144,7 @@ export default function SubscriptionsPage() {
                       className="w-full py-2 px-4 bg-destructive text-destructive-foreground rounded-lg font-medium hover:opacity-90 transition flex items-center justify-center gap-2"
                     >
                       <Trash2 size={16} />
-                      Unenroll
+                      Cancelar Inscrição
                     </button>
                   </div>
                 </div>
@@ -133,12 +152,12 @@ export default function SubscriptionsPage() {
             </div>
           ) : (
             <div className="bg-card rounded-lg p-12 border border-border text-center">
-              <p className="text-muted-foreground mb-4">You are not enrolled in any events yet</p>
+              <p className="text-muted-foreground mb-4">Você ainda não está inscrito em nenhum evento</p>
               <a
                 href="/events"
                 className="inline-block px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
               >
-                Browse Events
+                Explorar Eventos
               </a>
             </div>
           )}

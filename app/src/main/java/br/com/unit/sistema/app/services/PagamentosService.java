@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.unit.sistema.app.controller.dto.NotificacaoDTO;
 import br.com.unit.sistema.app.controller.dto.PagamentoCreateDTO;
 import br.com.unit.sistema.app.controller.dto.PagamentosListagemDTO;
-import br.com.unit.sistema.app.entity.Notificacao;
 import br.com.unit.sistema.app.entity.Pagamentos;
 import br.com.unit.sistema.app.entity.Tipo;
 import br.com.unit.sistema.app.repository.PagamentosRepositorys;
@@ -25,7 +25,7 @@ public class PagamentosService {
     @Transactional
     public void create(PagamentoCreateDTO dados) {
         Pagamentos pagamento = repositorys.save(new Pagamentos(dados));
-        notificacaoService.gerarNotificacaoPagamento(pagamento,Tipo.AVISO);
+        notificacaoService.salvarNotificacao(new NotificacaoDTO(pagamento,Tipo.AVISO));
     }
 
     @Transactional(readOnly = true)

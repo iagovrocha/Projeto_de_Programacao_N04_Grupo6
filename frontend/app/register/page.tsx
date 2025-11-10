@@ -8,10 +8,10 @@ import Link from "next/link"
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    name: "",
+    nome: "",
     email: "",
-    password: "",
-    role: "PARTICIPANT",
+    senha: "",
+    role: "PARTICIPANTE",
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -30,21 +30,27 @@ export default function Register() {
     setError("")
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/register", {
+      const response = await fetch("http://localhost:8080/usuarios/registro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
+
+      if (response.status === 409) {
+        setError("Este email já está cadastrado. Por favor, use outro email.")
+        setLoading(false)
+        return
+      }
 
       if (!response.ok) {
         throw new Error("Registration failed")
       }
 
       const data = await response.json()
-      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("user", JSON.stringify(data))
       router.push("/dashboard")
     } catch (err) {
-      setError("Registration failed. Please try again.")
+      setError("Falha no registro. Por favor, tente novamente.")
       console.error("Register error:", err)
     } finally {
       setLoading(false)
@@ -62,11 +68,11 @@ export default function Register() {
             <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="nome"
+              value={formData.nome}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="John Doe"
+              placeholder="Your Name"
               required
             />
           </div>
@@ -88,8 +94,8 @@ export default function Register() {
             <label className="block text-sm font-medium text-foreground mb-2">Password</label>
             <input
               type="password"
-              name="password"
-              value={formData.password}
+              name="senha"
+              value={formData.senha}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="••••••••"
@@ -105,9 +111,9 @@ export default function Register() {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              <option value="PARTICIPANT">Participant</option>
-              <option value="ORGANIZER">Organizer</option>
-              <option value="ADMIN">Administrator</option>
+              <option value="PARTICIPANTE">Participante</option>
+              <option value="ORGANIZADOR">Organizador</option>
+              <option value="ADMINISTRADOR">Administrador</option>
             </select>
           </div>
 

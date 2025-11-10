@@ -7,16 +7,17 @@ import Navbar from "@/components/navbar"
 
 interface Notification {
   idNotificacao: string
+  titulo: string
   mensagem: string
+  horario: string
+  lida: boolean
   tipo: string
   tag?: string
-  createdAt: string
-  lida: boolean
 }
 
 interface User {
   id: string
-  name: string
+  nome: string
   email: string
   role: string
 }
@@ -29,7 +30,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const userStr = localStorage.getItem("user")
-
+    console.log(userStr)
     if (!userStr) {
       router.push("/login")
       return
@@ -42,10 +43,13 @@ export default function Dashboard() {
 
   const fetchNotifications = async (userId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/notificacao/byUser/${userId}`)
+      const response = await fetch(
+        `http://localhost:8080/notificacao/reciveByUser/${userId}?page=0&size=5&sort=idNotificacaoUsuario.idNotificacao,desc`
+      )
       if (response.ok) {
         const data = await response.json()
-        setNotifications(data.slice(0, 10))
+        const notificationsList = data.content || data
+        setNotifications(Array.isArray(notificationsList) ? notificationsList : [])
       }
     } catch (err) {
       console.error("Failed to fetch notifications:", err)
@@ -66,7 +70,7 @@ export default function Dashboard() {
     <div className="flex h-screen">
       <Sidebar userType={user.role} />
       <div className="flex-1 ml-64 flex flex-col">
-        <Navbar userName={user.name} />
+        <Navbar userName={user.nome} />
         <main className="flex-1 overflow-auto p-6 bg-background">
           <div className="grid grid-cols-1 gap-6">
             <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
@@ -86,8 +90,16 @@ export default function Dashboard() {
                               : "border-l-blue-500 bg-blue-50"
                       }`}
                     >
-                      <p className="text-foreground font-medium">{notif.mensagem}</p>
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-foreground font-bold text-lg">{notif.titulo}</h3>
+                        {notif.lida ? (
+                          <span className="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700">Lida</span>
+                        ) : (
+                          <span className="text-xs px-2 py-1 rounded bg-blue-500 text-white font-medium">Nova</span>
+                        )}
+                      </div>
+                      <p className="text-foreground mb-3">{notif.mensagem}</p>
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className={`text-xs px-2 py-1 rounded font-medium ${
                           notif.tipo === "ALERTA"
                             ? "bg-red-200 text-red-800"
@@ -99,8 +111,19 @@ export default function Dashboard() {
                         }`}>
                           {notif.tipo}
                         </span>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(notif.createdAt).toLocaleDateString()}
+                        {notif.tag && (
+                          <span className="text-xs px-2 py-1 rounded bg-purple-200 text-purple-800 font-medium">
+                            {notif.tag}
+                          </span>
+                        )}
+                        <span className="text-xs text-muted-foreground ml-auto">
+                          {new Date(notif.horario).toLocaleString('pt-BR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
                         </span>
                       </div>
                     </div>

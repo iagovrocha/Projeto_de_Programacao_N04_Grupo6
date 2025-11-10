@@ -25,6 +25,11 @@ export default function Sidebar({ userType }: SidebarProps) {
     { href: "/manage-events", label: "Manage Events", icon: Settings },
   ]
 
+  const adminItems = [
+    { href: "/admin/notifications", label: "All Notifications", icon: Bell },
+    { href: "/admin/events", label: "All Events", icon: Calendar },
+  ]
+
   const isActive = (href: string) => pathname === href
 
   return (
@@ -66,9 +71,34 @@ export default function Sidebar({ userType }: SidebarProps) {
           )
         })}
 
-        {userType === "ORGANIZER" && (
+        {userType === "ORGANIZADOR" && (
           <div className="pt-4 mt-4 border-t border-sidebar-border">
             {organizerItems.map((item) => {
+              const Icon = item.icon
+              const active = isActive(item.href)
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+                    active
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent"
+                  }`}
+                  title={isMinimized ? item.label : ""}
+                >
+                  <Icon size={20} />
+                  {!isMinimized && <span className="text-sm">{item.label}</span>}
+                </Link>
+              )
+            })}
+          </div>
+        )}
+
+        {userType === "ADMINISTRADOR" && (
+          <div className="pt-4 mt-4 border-t border-sidebar-border">
+            {adminItems.map((item) => {
               const Icon = item.icon
               const active = isActive(item.href)
 

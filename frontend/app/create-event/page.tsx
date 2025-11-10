@@ -9,7 +9,7 @@ import Navbar from "@/components/navbar"
 
 interface User {
   id: string
-  name: string
+  nome: string
   email: string
   role: string
 }
@@ -18,12 +18,10 @@ export default function CreateEventPage() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    date: "",
-    location: "",
-    capacity: "",
-    category: "",
+    nome: "",
+    local: "",
+    data: "",
+    preco: "",
   })
   const [message, setMessage] = useState("")
   const router = useRouter()
@@ -37,7 +35,7 @@ export default function CreateEventPage() {
     }
 
     const parsedUser = JSON.parse(userStr)
-    if (parsedUser.role !== "ORGANIZER") {
+    if (parsedUser.role !== "ORGANIZADOR") {
       router.push("/dashboard")
       return
     }
@@ -58,35 +56,39 @@ export default function CreateEventPage() {
     setMessage("")
 
     try {
-      const response = await fetch("http://localhost:8080/events", {
+      // Converter data para LocalDateTime format (yyyy-MM-ddTHH:mm:ss)
+      const dataFormatada = formData.data.length === 16 ? `${formData.data}:00` : formData.data
+
+      const response = await fetch("http://localhost:8080/eventos", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
-          capacity: Number.parseInt(formData.capacity),
+          nome: formData.nome,
+          local: formData.local,
+          data: dataFormatada,
+          idOrganizador: Number.parseInt(user!.id),
+          preco: formData.preco ? Number.parseFloat(formData.preco) : 0,
         }),
       })
 
       if (response.ok) {
-        setMessage("Event created successfully!")
+        setMessage("Evento criado com sucesso!")
         setFormData({
-          title: "",
-          description: "",
-          date: "",
-          location: "",
-          capacity: "",
-          category: "",
+          nome: "",
+          local: "",
+          data: "",
+          preco: "",
         })
         setTimeout(() => {
           router.push("/manage-events")
         }, 1500)
       } else {
-        setMessage("Failed to create event")
+        setMessage("Falha ao criar evento")
       }
     } catch (err) {
-      setMessage("Error creating event")
+      setMessage("Erro ao criar evento")
       console.error("Error:", err)
     } finally {
       setLoading(false)
@@ -105,95 +107,64 @@ export default function CreateEventPage() {
     <div className="flex h-screen">
       <Sidebar userType={user.role} />
       <div className="flex-1 ml-64 flex flex-col">
-        <Navbar userName={user.name} />
+        <Navbar userName={user.nome} />
         <main className="flex-1 overflow-auto p-6 bg-background">
           <div className="max-w-2xl">
-            <h2 className="text-2xl font-bold text-foreground mb-6">Create New Event</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Criar Novo Evento</h2>
 
             <form onSubmit={handleSubmit} className="bg-card rounded-lg p-6 border border-border">
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Event Title</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Nome do Evento</label>
                   <input
                     type="text"
-                    name="title"
-                    value={formData.title}
+                    name="nome"
+                    value={formData.nome}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Enter event title"
+                    placeholder="Digite o nome do evento"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Description</label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Describe your event"
-                    rows={4}
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Date</label>
-                    <input
-                      type="datetime-local"
-                      name="date"
-                      value={formData.date}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Capacity</label>
-                    <input
-                      type="number"
-                      name="capacity"
-                      value={formData.capacity}
-                      onChange={handleChange}
-                      className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                      placeholder="Max participants"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Location</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Local</label>
                   <input
                     type="text"
-                    name="location"
-                    value={formData.location}
+                    name="local"
+                    value={formData.local}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Event location"
+                    placeholder="Digite o local do evento"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Category</label>
-                  <select
-                    name="category"
-                    value={formData.category}
+                  <label className="block text-sm font-medium text-foreground mb-2">Data e Hora</label>
+                  <input
+                    type="datetime-local"
+                    name="data"
+                    value={formData.data}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                     required
-                  >
-                    <option value="">Select a category</option>
-                    <option value="WORKSHOP">Workshop</option>
-                    <option value="CONFERENCE">Conference</option>
-                    <option value="SHOW">Show</option>
-                    <option value="COMPETITION">Competition</option>
-                    <option value="OTHER">Other</option>
-                  </select>
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Preço (R$)</label>
+                  <input
+                    type="number"
+                    name="preco"
+                    value={formData.preco}
+                    onChange={handleChange}
+                    min="0"
+                    step="0.01"
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="0.00"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Deixe em branco para evento gratuito</p>
                 </div>
 
                 {message && (
@@ -213,7 +184,7 @@ export default function CreateEventPage() {
                   disabled={loading}
                   className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 disabled:opacity-50"
                 >
-                  {loading ? "Creating..." : "Create Event"}
+                  {loading ? "Criando..." : "Criar Evento"}
                 </button>
               </div>
             </form>
