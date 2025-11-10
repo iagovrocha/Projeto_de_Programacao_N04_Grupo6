@@ -1,10 +1,22 @@
 package br.com.unit.sistema.app.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.unit.sistema.app.controller.dto.AtualizarUsuarioDTO;
 import br.com.unit.sistema.app.controller.dto.UsuarioAutenticacaoDTO;
+import br.com.unit.sistema.app.controller.dto.UsuarioCreateDTO;
 import br.com.unit.sistema.app.controller.dto.UsuarioResponseDTO;
 import br.com.unit.sistema.app.entity.UsuarioEntidade;
 import br.com.unit.sistema.app.repository.UsuarioRepository;
@@ -13,6 +25,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     @Autowired
@@ -31,9 +44,9 @@ public class UsuarioController {
         return usuarioRepository.findById(id).orElse(null);
     }
 
-    @PostMapping
-    public UsuarioEntidade criarUsuario(@RequestBody UsuarioEntidade usuario) {
-        return usuarioRepository.save(usuario);
+    @PostMapping("/registro")
+    public ResponseEntity<UsuarioResponseDTO> criarUsuario(@RequestBody @Valid UsuarioCreateDTO usuario) {
+        return usuarioService.registrarUsuario(usuario);
     }
 
     @PostMapping("/login")
@@ -41,17 +54,9 @@ public class UsuarioController {
         return usuarioService.autenticarUsuario(dadosLogin);
     }
 
-
     @PutMapping("/{id}")
-    public UsuarioEntidade atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioEntidade usuarioAtualizado) {
-        UsuarioEntidade usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario != null) {
-            usuario.setNome(usuarioAtualizado.getNome());
-            usuario.setEmail(usuarioAtualizado.getEmail());
-            usuario.setSenha(usuarioAtualizado.getSenha());
-            return usuarioRepository.save(usuario);
-        }
-        return null;
+    public UsuarioResponseDTO atualizarUsuario(@PathVariable Long id, @RequestBody @Valid AtualizarUsuarioDTO dados) {
+        return usuarioService.atualizar(id, dados);
     }
 
     @DeleteMapping("/{id}")

@@ -1,13 +1,17 @@
 package br.com.unit.sistema.app.services;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import br.com.unit.sistema.app.controller.dto.AtualizarUsuarioDTO;
 import br.com.unit.sistema.app.controller.dto.UsuarioAutenticacaoDTO;
 import br.com.unit.sistema.app.controller.dto.UsuarioCreateDTO;
 import br.com.unit.sistema.app.controller.dto.UsuarioResponseDTO;
 import br.com.unit.sistema.app.entity.UsuarioEntidade;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 import br.com.unit.sistema.app.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 
@@ -18,12 +22,32 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
     @Transactional
     public void criarUsuario (UsuarioCreateDTO usuarioCreateDTO) {
-        var usuario = new UsuarioEntidade();
-        usuario.setEmail(usuarioCreateDTO.email());
-        usuario.setNome(usuarioCreateDTO.nome());
-        usuario.setSenha(usuarioCreateDTO.senha());
+        usuarioRepository.save(new UsuarioEntidade(usuarioCreateDTO));
+    }
 
-        usuarioRepository.save(usuario);
+    @Transactional
+    public ResponseEntity<UsuarioResponseDTO> registrarUsuario(UsuarioCreateDTO usuario) {
+        // Validar se já existe um usuário com o mesmo email
+        boolean emailJaExiste = usuarioRepository.findAll()
+            .stream()
+            .anyMatch(u -> u.getEmail().equals(usuario.email()));
+        
+        if (emailJaExiste) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        
+        // Criar novo usuário
+        UsuarioEntidade novoUsuario = new UsuarioEntidade(usuario);
+        usuarioRepository.save(novoUsuario);
+        
+        UsuarioResponseDTO response = new UsuarioResponseDTO(
+            novoUsuario.getId(),
+            novoUsuario.getNome(),
+            novoUsuario.getEmail(),
+            novoUsuario.getRole()
+        );
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     @Transactional
     public List<UsuarioResponseDTO> listarUsuarios() {
@@ -50,5 +74,21 @@ public class UsuarioService {
             UsuarioResponseDTO usuarioResposta = new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getRole());
             return usuarioResposta;
         }
+    }
+
+    @Transactional
+    public UsuarioResponseDTO atualizar(Long id, AtualizarUsuarioDTO dados) {
+        UsuarioEntidade usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        
+        usuario.atualizarInfo(dados);
+        usuarioRepository.save(usuario);
+        
+        return new UsuarioResponseDTO(
+            usuario.getId(),
+            usuario.getNome(),
+            usuario.getEmail(),
+            usuario.getRole()
+        );
     }
 }
