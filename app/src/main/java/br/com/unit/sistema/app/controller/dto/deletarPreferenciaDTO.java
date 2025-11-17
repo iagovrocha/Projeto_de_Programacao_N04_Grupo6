@@ -2,8 +2,10 @@ package br.com.unit.sistema.app.controller.dto;
 
 import jakarta.validation.constraints.NotNull;
 
-public record NotificacaoColetaDTO(
+public record deletarPreferenciaDTO(
     @NotNull
-    long idUser){
+    long idPreferencia
+) {
     
+
 }

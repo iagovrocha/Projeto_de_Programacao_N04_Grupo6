@@ -7,5 +7,8 @@ public record NotificacaoLidaDTO(
     long idNotificacao,
     
     @NotNull
-    long idUser) {
+    long idUser,
+    
+    Long idTag
+    ) {
 }

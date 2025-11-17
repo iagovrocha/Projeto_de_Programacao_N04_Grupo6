@@ -30,6 +30,7 @@ Executar classe AppApplication.java no pacote br.com.unit.app
 1. Decidimos utilizar /app ao invés de /src
 2. As mudanças da semana 1 estão nas branchs de cada colaborador do grupo.
 3. Decidimos fazer isso devido a mudança do projeto para Spring Boot na semana 2.
+4. Mudanças referentes a semana 3. Estão na branch semana 3.
 
 ## Responsabilidades de cada integrante
 
