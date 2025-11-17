@@ -61,7 +61,6 @@ export default function ManageEventsPage() {
   const fetchEvents = async (userId: string) => {
     setLoading(true)
     try {
-      // Buscar todos os eventos do organizador
       const response = await fetch(`http://localhost:8080/eventos/createByOrg/${userId}?page=0&size=1000&sort=id,desc`)
       if (response.ok) {
         const data = await response.json()
@@ -76,11 +75,9 @@ export default function ManageEventsPage() {
   }
 
   const applyPagination = () => {
-    // Calcular paginação
     const totalPgs = Math.ceil(allEvents.length / itemsPerPage)
     setTotalPages(totalPgs)
 
-    // Paginar resultados
     const startIndex = currentPage * itemsPerPage
     const endIndex = startIndex + itemsPerPage
     setPaginatedEvents(allEvents.slice(startIndex, endIndex))

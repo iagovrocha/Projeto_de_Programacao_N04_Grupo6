@@ -57,7 +57,11 @@ public class EventoService {
         evento.atualizar(dto);
         
         Evento eventoAtualizado = repository.save(evento);
-        notificacaoService.salvarNotificacao(new NotificacaoDTO(eventoAtualizado, Tipo.AVISO));
+        java.util.List<Long> destinatarios = new java.util.ArrayList<>(buscarIdsUsuariosInscritosPorEvento(id));
+        if (!destinatarios.contains(eventoAtualizado.getIdUser())) {
+            destinatarios.add(0, eventoAtualizado.getIdUser());
+        }
+        notificacaoService.salvarNotificacao(new NotificacaoDTO(eventoAtualizado, destinatarios, Tipo.AVISO));
         return eventoAtualizado;
     }
 

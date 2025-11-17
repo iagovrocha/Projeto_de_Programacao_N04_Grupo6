@@ -39,13 +39,25 @@ public record NotificacaoDTO(
         }
     
     public NotificacaoDTO(Evento dados, Tipo tipo){
-        this("Novo/Atualizção Evento registrado",
+        this("Novo Evento registrado",
         "Evento: "+dados.getNome() +
         " Local: "+dados.getLocal() + 
         " ID_Evento: "+dados.getId(), 
         tipo,
         null,
         Arrays.asList(dados.getIdUser()),
+        null);
+    }
+
+    // Construtor que permite enviar para múltiplos destinatários (organizador + inscritos)
+    public NotificacaoDTO(Evento dados, java.util.List<Long> destinatarios, Tipo tipo){
+        this("Atualização de Evento - " + dados.getNome(),
+        "Evento: "+dados.getNome() +
+        " Local: "+dados.getLocal() + 
+        " ID_Evento: "+dados.getId(),
+        tipo,
+        null,
+        destinatarios,
         null);
     }
 

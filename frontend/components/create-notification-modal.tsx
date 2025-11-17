@@ -62,7 +62,6 @@ export default function CreateNotificationModal({
     setError("")
 
     try {
-      // Primeiro, buscar a lista de IDs dos usuários inscritos
       const inscritosResponse = await fetch(
         `http://localhost:8080/eventos/${event.id}/inscritos`
       )
@@ -79,7 +78,6 @@ export default function CreateNotificationModal({
         return
       }
 
-      // Criar a notificação com os IDs dos inscritos
       const notificationData = {
         titulo: formData.titulo,
         mensagem: formData.mensagem,
