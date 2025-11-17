@@ -12,7 +12,7 @@ interface Notification {
   titulo: string
   mensagem: string
   statusEnvio: boolean
-  dataHorarioEnvio: string
+  horario: string
   tipo: string
 }
 
@@ -137,7 +137,7 @@ export default function AdminNotificationsPage() {
                       </div>
                       <div className="text-right text-sm">
                         <p className="text-muted-foreground">
-                          {new Date(notification.dataHorarioEnvio).toLocaleString("pt-BR")}
+                          {new Date(notification.horario).toLocaleString("pt-BR")}
                         </p>
                         <p className={`mt-1 ${notification.statusEnvio ? "text-green-600" : "text-red-600"}`}>
                           {notification.statusEnvio ? "Enviado" : "Pendente"}
