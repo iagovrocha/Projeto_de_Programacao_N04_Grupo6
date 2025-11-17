@@ -1,14 +1,59 @@
+version: '3.8'
+
 services:
-  mysql:
-    image: mysql
+
+  backend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: backend
     ports:
-      - "3306:3306"
-    expose:
-      - "3306"
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
     environment:
-      - MYSQL_USER=springuser
-      - MYSQL_PASSWORD=ThePassword
-      - MYSQL_DATABASE=db_example
-      - MYSQL_ROOT_PASSWORD=root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gerenciador_evento_api?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: pokemon2000
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pokemon2000
+      MYSQL_DATABASE: gerenciador_evento_api
+    ports:
+      - "5432:3306"
     volumes:
-      - "./conf.d:/etc/mysql/conf.d:ro"
+      - mysql_data:/var/lib/mysql
+      - ./sql/BancoSQL_Grupo06.sql:/docker-entrypoint-initdb.d/BancoSQL_Grupo06.sql
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 5s
+      retries: 10
+      timeout: 5s
+      start_period: 10s
+
+networks:
+  app-network:
+
+volumes:
+  mysql_data:
