@@ -31,14 +31,9 @@ public class NotificacaoController {
     @Autowired
     private NotificacaoService service;
 
-    @GetMapping("{id}")
+    @GetMapping("/all/{id}")
     public ResponseEntity listarNotificacao(@PathVariable long id, Pageable paginacao){
        return service.coletarNotificacao(id, paginacao);
-    }
-
-    @GetMapping("/all/{idUsuario}")
-    public ResponseEntity listarTodasNotificacoes(@PathVariable long idUsuario, Pageable paginacao){
-       return service.buscarTodasNotificacoes(idUsuario, paginacao);
     }
 
     @GetMapping("/openNot/{id}")
