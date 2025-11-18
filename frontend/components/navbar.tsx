@@ -77,7 +77,7 @@ export default function Navbar({ userName }: NavbarProps) {
   return (
     <nav className="bg-card border-b border-border px-6 py-4 flex items-center justify-between">
       <div className="flex-1">
-        <h2 className="text-lg font-semibold text-foreground">Welcome back, {userName}</h2>
+        <h2 className="text-lg font-semibold text-foreground">Bem-vindo de volta, {userName}</h2>
       </div>
 
       <div className="relative" onMouseLeave={() => setIsHovering(false)}>
@@ -97,7 +97,7 @@ export default function Navbar({ userName }: NavbarProps) {
         {(showDropdown || isHovering) && (
           <div className="absolute right-0 mt-2 w-80 bg-card border border-border rounded-lg shadow-lg z-50">
             <div className="p-4 border-b border-border">
-              <h3 className="font-semibold text-foreground">Recent Notifications</h3>
+              <h3 className="font-semibold text-foreground">Notificações Recentes</h3>
             </div>
 
             {notifications.length > 0 ? (
@@ -145,14 +145,14 @@ export default function Navbar({ userName }: NavbarProps) {
                 ))}
               </div>
             ) : (
-              <div className="p-4 text-center text-muted-foreground text-sm">No notifications yet</div>
+              <div className="p-4 text-center text-muted-foreground text-sm">Nenhuma notificação ainda</div>
             )}
 
             <a
               href="/notifications"
               className="block p-3 text-center text-primary hover:bg-secondary/50 text-sm font-medium border-t border-border"
             >
-              View All Notifications
+              Ver Todas as Notificações
             </a>
           </div>
         )}

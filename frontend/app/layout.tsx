@@ -10,8 +10,8 @@ const _geistMono = V0_Font_Geist_Mono({ subsets: ['latin'], weight: ["100","200"
 const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
 
 export const metadata: Metadata = {
-  title: 'Event Management System - Nova Aurora',
-  description: 'Projeto criado para a materia de Projeto de Programação',
+  title: 'Sistema de Gerenciamento de Eventos - Nova Aurora',
+  description: 'Projeto criado para a matéria de Projeto de Programação',
 }
 
 export default function RootLayout({
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={`font-sans antialiased`}>
         {children}
         <Analytics />
