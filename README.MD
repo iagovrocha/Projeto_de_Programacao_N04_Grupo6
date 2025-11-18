@@ -182,20 +182,74 @@ spring.datasource.password={senha do user do MySQL} (Exemplo: root123)
 ## Prints ou exemplos de saída
 ### Método GET
 
-* /notificacao/all/{id}
+* **/notificacao/all/{id}**
+    
+    Body do Response (JSON) quando passando um idUser válido:
 
-* /notificacao/openNot/{id}
+    ![](prints_exemplos/print_response_get_notificacao_all_id.jpeg)
 
-* /notificacao/newNot/User/{id}
+    Body do Response (JSON) quando passando um idUser válido mas não ADMINISTRADOR:
 
-* /notificacao/reciveByUser/{id}
+    ![](prints_exemplos/print_response_get_notificacao_all_id_user_not_admin.jpeg)
 
-* /notificacao/sendByUser/{id}
+    Body do Response (JSON) quando passando um idUser não existe:
 
-* /notificacao/filterTipo/{tipo}
+    ![](prints_exemplos/print_response_get_notificacao_all_id_not_found.jpeg)
+
+* **/notificacao/openNot/{id}**
+    Body do Response (JSON) quando passando um idNotificação válido:
+
+    ![](prints_exemplos/print_response_get_notificacao_openNot_id.jpeg)
+
+    Body do Response (JSON) quando passando um idNotificação inválido:
+
+    ![](prints_exemplos/print_response_get_notificacao_openNot_id_not_found.jpeg)
+
+* **/notificacao/newNot/User/{id}**
+    Body do Response (JSON) quando passando um idUser válido:
+
+    ![](prints_exemplos/print_response_get_notificacao_newNot_user_id.jpeg)
+
+    Body do Response (JSON) quando passando um idUser não existe:
+
+    ![](prints_exemplos/print_response_get_notificacao_newNot_user_id_not_found.jpeg)
+
+
+* **/notificacao/reciveByUser/{id}**
+    Body do Response (JSON) quando passando um idUser válido:
+
+    ![](prints_exemplos\print_response_get_notificacao_reciveby_user.jpeg)
+
+    Body do Response (JSON) quando passando um idUser não existe:
+
+    ![](prints_exemplos/print_response_get_notificacao_reciveby_user_bad.jpeg)
+
+* **/notificacao/sendByUser/{id}**
+    Body do Response (JSON) quando passando um idUser válido:
+
+    ![](prints_exemplos/print_response_get_notificacao_sendbyUser_id.jpeg)
+    
+    Body do Response (JSON) quando passando um idUser válido mas não ADMINISTRADOR:
+
+    ![](prints_exemplos/print_response_get_notificacao_sendbyUser_id_not_adm.jpeg)
+
+    Body do Response (JSON) quando passando um idUser não existe:
+
+    ![](prints_exemplos/print_response_get_notificacao_sendbyUser_id_not_adm_not_found.jpeg)
+
+
+
+* **/notificacao/filterTipo/{tipo}**
+    Body do Response (JSON) quando passando um tipo válido:
+
+    ![](prints_exemplos/print_response_get_notificacao_filter.jpeg)
+
+    Body do Response (JSON) quando passando um tipo inválido:
+
+    ![](prints_exemplos/print_response_get_notificacao_filter_sem_tipo.jpeg)
 
 ### Método POST
-* /notificacao
+* **/notificacao**
 
     Body da requisição (JSON):
     ```json
@@ -218,7 +272,7 @@ spring.datasource.password={senha do user do MySQL} (Exemplo: root123)
     ![print_response_post_create_notificacao_bad](prints_exemplos/print_response_post_create_notificacao_bad.png)
 ###  Método PUT
 
-* /notificacao
+* **/notificacao**
 (Marcar notificação como lida)
 ```json
 {
@@ -238,11 +292,11 @@ Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem sem valor algum ou 
 
 ![print_response_put_marcar_como_lida_notificacao_bad](prints_exemplos/print_response_put_marcar_como_lida_notificacao_bad.png)
 
-* /notificacao/tag
+* **/notificacao/tag**
 
 
 ###  Método DELETE
-* /notificacao
+* **/notificacao**
 ```json
 {
     "idNotificacao": 1
