@@ -293,6 +293,21 @@ Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem sem valor algum ou 
 ![print_response_put_marcar_como_lida_notificacao_bad](prints_exemplos/print_response_put_marcar_como_lida_notificacao_bad.png)
 
 * **/notificacao/tag**
+```json
+{
+    "idUser":1,
+    "idNotificacao":1,
+    "idTag":2
+}
+```
+
+Caso o Usuario não seja Administrador:
+
+![](prints_exemplos/print_response_put_notificacao_put_not_adm.jpeg)
+
+Caso não exista idTag nem IdNotificação:
+
+![](prints_exemplos/print_response_put_notificacao_put_not_found.jpeg)
 
 
 ###  Método DELETE
