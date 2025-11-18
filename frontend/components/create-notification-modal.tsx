@@ -35,7 +35,6 @@ export default function CreateNotificationModal({
   useEffect(() => {
     if (isOpen && event) {
       fetchInscritosCount()
-      // Pré-preencher o título com o nome do evento
       setFormData({
         titulo: `Notificação - ${event.nome}`,
         mensagem: "",

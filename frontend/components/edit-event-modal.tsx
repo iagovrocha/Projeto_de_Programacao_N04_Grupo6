@@ -29,8 +29,7 @@ export default function EditEventModal({ event, isOpen = true, onClose, onEventU
 
   useEffect(() => {
     if (event) {
-      // Converter a data do formato ISO para datetime-local
-      const dataFormatada = event.data.substring(0, 16) // Remove os segundos
+      const dataFormatada = event.data.substring(0, 16)
       setFormData({
         nome: event.nome,
         local: event.local,
@@ -52,8 +51,7 @@ export default function EditEventModal({ event, isOpen = true, onClose, onEventU
     setMessage("")
 
     try {
-      // Converter data para LocalDateTime format (yyyy-MM-ddTHH:mm:ss)
-      const dataFormatada = formData.data.length === 16 ? `${formData.data}:00` : formData.data
+    const dataFormatada = formData.data.length === 16 ? `${formData.data}:00` : formData.data
 
       const response = await fetch(`http://localhost:8080/eventos/${event.id}`, {
         method: "PUT",

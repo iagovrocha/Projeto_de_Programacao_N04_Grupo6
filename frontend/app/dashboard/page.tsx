@@ -64,7 +64,6 @@ export default function Dashboard() {
 
   const fetchMyEventsCount = async (userId: string) => {
     try {
-      // Busca eventos em que o usuário está inscrito
       const response = await fetch(`http://localhost:8080/eventos/eventosinscritos/${userId}`)
       if (response.ok) {
         const data = await response.json()
@@ -77,7 +76,6 @@ export default function Dashboard() {
 
   const fetchAvailableEventsCount = async () => {
     try {
-      // Busca todos os eventos disponíveis
       const response = await fetch("http://localhost:8080/eventos")
       if (response.ok) {
         const data = await response.json()

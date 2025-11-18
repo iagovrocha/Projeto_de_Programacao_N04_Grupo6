@@ -126,7 +126,6 @@ export default function ManageEventsPage() {
   }
 
   const handleNotificationCreated = () => {
-    // Refresh pode ser necessário ou apenas fechar o modal
   }
 
   const handleDelete = async (eventId: string) => {

@@ -55,7 +55,6 @@ export default function NotificationsPage() {
   const fetchAllNotifications = async (userId: string) => {
     setLoading(true)
     try {
-      // Buscar todas as notificações (tamanho grande para pegar todas)
       const response = await fetch(
         `http://localhost:8080/notificacao/reciveByUser/${userId}?page=0&size=1000&sort=idNotificacaoUsuario.idNotificacao,desc`
       )
@@ -74,7 +73,7 @@ export default function NotificationsPage() {
   const applyFiltersAndPagination = () => {
     let filtered = allNotifications
 
-    // Aplicar filtros
+    
     if (filterType !== "ALL") {
       filtered = filtered.filter((n) => n.tipo === filterType)
     }
@@ -85,18 +84,17 @@ export default function NotificationsPage() {
 
     setFilteredNotifications(filtered)
 
-    // Calcular paginação
+    
     const totalPgs = Math.ceil(filtered.length / itemsPerPage)
     setTotalPages(totalPgs)
 
-    // Paginar resultados
+    
     const startIndex = currentPage * itemsPerPage
     const endIndex = startIndex + itemsPerPage
     setPaginatedNotifications(filtered.slice(startIndex, endIndex))
   }
 
   useEffect(() => {
-    // Reset para primeira página ao mudar filtros
     setCurrentPage(0)
   }, [filterType, filterTag])
 

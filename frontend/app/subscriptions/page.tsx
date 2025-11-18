@@ -63,17 +63,7 @@ export default function SubscriptionsPage() {
     
     if (confirm("Tem certeza que deseja cancelar sua inscrição neste evento?")) {
       try {
-        // TODO: Implementar endpoint de desinscrição no backend
         alert("Funcionalidade de desinscrição em desenvolvimento")
-        // const response = await fetch(`http://localhost:8080/eventos/desinscrever`, {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ idUsuario: parsedUser.id, idEvento: eventId })
-        // })
-        // if (response.ok) {
-        //   alert("Inscrição cancelada com sucesso")
-        //   fetchSubscriptions(parsedUser.id)
-        // }
       } catch (err) {
         console.error("Failed to unenroll:", err)
         alert("Falha ao cancelar inscrição")
