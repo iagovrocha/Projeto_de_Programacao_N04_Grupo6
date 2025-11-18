@@ -161,64 +161,106 @@ spring.datasource.password={senha do user do MySQL} (Exemplo: root123)
 2. As mudanças da semana 1 estão nas branchs de cada colaborador do grupo.
 3. Decidimos fazer isso devido a mudança do projeto para Spring Boot na semana 2.
 
-## Obeservações
+## Observações
 1. Foi utilizado a LLM [v0](https://v0.app/) para criação da base do Frontend e o [GitHub Copilot](https://github.com/features/copilot?locale=pt-BR) para continuidade do desenvolvimento.
 2. Remoção dos casos de uso referentes a Tipos de Pagamentos.
 3. Remoção do caso de uso Responder Notificação.
 4. Remoção dos casos de uso Telefone e Push que informava como a notificação era enviada.
 5. A fila proposta nos objetivos é feita a partir de uma lista que carrega os ids dos destinatários no atributo `destinatarios` em notificação onde é notificado usuário a usuário em ordem de chegada.
+6. Pasta `prints_exemplos` comtém os prints do exemplo de saída
 
 [Diagrama Caso de Uso](https://drive.google.com/file/d/1VfohNCQWRZp4bpNb3Xq1ckoFzHwvSEOg/view?pli=1)
 ## Responsabilidades de cada integrante
-| Nome          | Responsabilidades |
+| Nome | Responsabilidades |
 | ------------- |:-------------:|
-| Iago Vieira Rocha                      | Classes Pagamentos e Tags, todo o Frontend e testes |
-| João Gabriel Mendonça Ribeiro          | Classe Usuário, fez os vídeos de demostração e testes |
-| João Paulo Lordêlo Pedreira Vivas      | Classe Notificações, Preferências e testes |
-| Mariana Menezes Correia                | Classe Eventos e Documentção e testes|
-| Rafael Calmon Gonzaga Santos           | Implementação do Docker para facilitar e Documentação e testes |
+| Iago Vieira Rocha | Desenvolvimento do frontend (telas, componentes e estilos), implementação das classes `Pagamentos` e `Tags` (models, serviços e endpoints), e execução de testes manuais relacionados às funcionalidades de pagamentos e tags. |
+| João Gabriel Mendonça Ribeiro | Implementação da entidade `Usuário` (model, serviço e endpoints), criação de vídeos de demonstração do sistema e execução de testes manuais do módulo de usuários. |
+| João Paulo Lordêlo Pedreira Vivas | Implementação das funcionalidades de Notificações classes `Notificações`, `LogsNotificacao` e `Preferencia` (models, serviços e endpoints), incluindo lógica de persistência, regras de negócio e verificação funcional por meio de testes manuais. |
+| Mariana Menezes Correia | Implementação das funcionalidades de Eventos (model, serviço e endpoints), preparação da documentação técnica e execução de testes manuais relacionados a eventos. |
+| Rafael Calmon Gonzaga Santos | Configuração de conteinerização e automação com Docker (Dockerfiles e `docker-compose.yml`), criação de instruções de execução e realização de testes manuais de integração para validar o ambiente. |
 
 ## Prints ou exemplos de saída
-* Método GET
+### Método GET
 
-/notificacao/all/{id}
+* /notificacao/all/{id}
 
-/notificacao/openNot/{id}
+* /notificacao/openNot/{id}
 
-/notificacao/newNot/User/{id}
+* /notificacao/newNot/User/{id}
 
-/notificacao/reciveByUser/{id}
+* /notificacao/reciveByUser/{id}
 
-/notificacao/sendByUser/{id}
+* /notificacao/sendByUser/{id}
 
-/notificacao/filterTipo/{tipo}
+* /notificacao/filterTipo/{tipo}
 
-* Método POST
+### Método POST
+* /notificacao
 
-/notificacao
+    Body da requisição (JSON):
+    ```json
+    {
+        "titulo": "Notificação Exemplo",
+        "mensagem": "Menssagem Notificação Exemplo",
+        "tipo": "ALERTA",
+        "idRemetente": null,
+        "destinatarios":[1]
+    }
+    ```
+    O `"idRemetente": null` indica que a notificação vem do sistema.
+
+    Body do Response (JSON):
+
+    ![print_response_post_create_notificacao](prints_exemplos\print_response_post_create_notificacao.png)
+
+    Caso um dos campos `"titulo"`, `"mensagem"` e `"tipo"` estiverem em branco ou `"tipo"` não corresponder a LEMBRETE, ALERTA, CONFIRMACAO ou AVISO o Response retornará:
+
+    ![print_response_post_create_notificacao_bad](prints_exemplos\print_response_post_create_notificacao_bad.png)
+###  Método PUT
+
+* /notificacao
+(Marcar notificação como lida)
 ```json
 {
+    "idNotificacao": 1,
+    "idUser": 1
+}
+```
+Body do Response (JSON):
 
+![print_response_put_marcar_como_lida_notificacao](prints_exemplos\print_response_put_marcar_como_lida_notificacao.png)
+
+Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem verem com valores inválidos (Não encontrado) o Response retornará:
+
+![print_response_put_marcar_como_lida_notificacao_not_found](prints_exemplos\print_response_put_marcar_como_lida_notificacao_not_found.png)
+
+Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem sem valor algum ou valor não númerico o Response retornará:
+
+![print_response_put_marcar_como_lida_notificacao_bad](prints_exemplos\print_response_put_marcar_como_lida_notificacao_bad.png)
+
+* /notificacao/tag
+
+
+###  Método DELETE
+* /notificacao
+```json
+{
+    "idNotificacao": 1
 }
 ```
 
-* Método PUT
+Body do Response (JSON):
 
-/notificacao
-```json
-{
-    
-}
-```
-/notificacao/tag
+![print_response_delete_notificacao](prints_exemplos\print_response_delete_notificacao.png)
 
-* Método DELETE
-/notificacao
-```json
-{
-    
-}
-```
+Caso o campo `"idNotificacao"` estiver com valor inválido (Não encontrado) o Response retornará:
+
+![print_response_delete_notificacao_not_found](prints_exemplos\print_response_delete_notificacao_not_found.png)
+
+Caso o campo `"idNotificacao"` estiver sem valor algum ou valor não númerico o Response retornará:
+
+![print_response_delete_notificacao](prints_exemplos\print_response_delete_notificacao_bad.png)
+
 
 ## Métodos
 
