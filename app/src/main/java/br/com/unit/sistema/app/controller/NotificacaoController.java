@@ -75,11 +75,6 @@ public class NotificacaoController {
     public ResponseEntity atualizarTagNotificacao(@RequestBody @Valid NotificacaoLidaDTO dados){
         return service.atualizarTag(dados);
     }
-
-    @GetMapping("/teste")
-    public String teste(){
-        return "Ok";
-    }
     
     @DeleteMapping
     public ResponseEntity deletarNotificacao(@RequestBody NotificacaoDeletarDTO dados){
