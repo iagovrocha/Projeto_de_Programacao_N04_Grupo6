@@ -211,11 +211,11 @@ spring.datasource.password={senha do user do MySQL} (Exemplo: root123)
 
     Body do Response (JSON):
 
-    ![print_response_post_create_notificacao](prints_exemplos\print_response_post_create_notificacao.png)
+    ![print_response_post_create_notificacao](prints_exemplos/print_response_post_create_notificacao.png)
 
     Caso um dos campos `"titulo"`, `"mensagem"` e `"tipo"` estiverem em branco ou `"tipo"` não corresponder a LEMBRETE, ALERTA, CONFIRMACAO ou AVISO o Response retornará:
 
-    ![print_response_post_create_notificacao_bad](prints_exemplos\print_response_post_create_notificacao_bad.png)
+    ![print_response_post_create_notificacao_bad](prints_exemplos/print_response_post_create_notificacao_bad.png)
 ###  Método PUT
 
 * /notificacao
@@ -228,15 +228,15 @@ spring.datasource.password={senha do user do MySQL} (Exemplo: root123)
 ```
 Body do Response (JSON):
 
-![print_response_put_marcar_como_lida_notificacao](prints_exemplos\print_response_put_marcar_como_lida_notificacao.png)
+![print_response_put_marcar_como_lida_notificacao](prints_exemplos/print_response_put_marcar_como_lida_notificacao.png)
 
 Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem verem com valores inválidos (Não encontrado) o Response retornará:
 
-![print_response_put_marcar_como_lida_notificacao_not_found](prints_exemplos\print_response_put_marcar_como_lida_notificacao_not_found.png)
+![print_response_put_marcar_como_lida_notificacao_not_found](prints_exemplos/print_response_put_marcar_como_lida_notificacao_not_found.png)
 
 Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem sem valor algum ou valor não númerico o Response retornará:
 
-![print_response_put_marcar_como_lida_notificacao_bad](prints_exemplos\print_response_put_marcar_como_lida_notificacao_bad.png)
+![print_response_put_marcar_como_lida_notificacao_bad](prints_exemplos/print_response_put_marcar_como_lida_notificacao_bad.png)
 
 * /notificacao/tag
 
@@ -251,15 +251,15 @@ Caso um dos campos `"idNotificacao"` ou `"idUser"` estiverem sem valor algum ou 
 
 Body do Response (JSON):
 
-![print_response_delete_notificacao](prints_exemplos\print_response_delete_notificacao.png)
+![print_response_delete_notificacao](prints_exemplos/print_response_delete_notificacao.png)
 
 Caso o campo `"idNotificacao"` estiver com valor inválido (Não encontrado) o Response retornará:
 
-![print_response_delete_notificacao_not_found](prints_exemplos\print_response_delete_notificacao_not_found.png)
+![print_response_delete_notificacao_not_found](prints_exemplos/print_response_delete_notificacao_not_found.png)
 
 Caso o campo `"idNotificacao"` estiver sem valor algum ou valor não númerico o Response retornará:
 
-![print_response_delete_notificacao](prints_exemplos\print_response_delete_notificacao_bad.png)
+![print_response_delete_notificacao](prints_exemplos/print_response_delete_notificacao_bad.png)
 
 
 ## Métodos
