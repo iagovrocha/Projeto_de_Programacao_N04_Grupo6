@@ -49,7 +49,6 @@ public record NotificacaoDTO(
         null);
     }
 
-    // Construtor que permite enviar para múltiplos destinatários (organizador + inscritos)
     public NotificacaoDTO(Evento dados, java.util.List<Long> destinatarios, Tipo tipo){
         this("Atualização de Evento - " + dados.getNome(),
         "Evento: "+dados.getNome() +
@@ -61,7 +60,6 @@ public record NotificacaoDTO(
         null);
     }
 
-    // Construtor para confirmação de inscrição
     public NotificacaoDTO(Evento evento, Long idUsuario, Tipo tipo){
         this("Confirmação de Inscrição - " + evento.getNome(),
         "Sua inscrição foi confirmada com sucesso!\n\n" +

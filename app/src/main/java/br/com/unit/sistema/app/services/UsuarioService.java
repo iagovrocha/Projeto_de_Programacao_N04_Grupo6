@@ -27,7 +27,6 @@ public class UsuarioService {
 
     @Transactional
     public ResponseEntity<UsuarioResponseDTO> registrarUsuario(UsuarioCreateDTO usuario) {
-        // Validar se já existe um usuário com o mesmo email
         boolean emailJaExiste = usuarioRepository.findAll()
             .stream()
             .anyMatch(u -> u.getEmail().equals(usuario.email()));
@@ -36,7 +35,6 @@ public class UsuarioService {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         
-        // Criar novo usuário
         UsuarioEntidade novoUsuario = new UsuarioEntidade(usuario);
         usuarioRepository.save(novoUsuario);
         

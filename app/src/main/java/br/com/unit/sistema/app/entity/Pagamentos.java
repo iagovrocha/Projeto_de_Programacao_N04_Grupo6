@@ -48,9 +48,6 @@ public class Pagamentos {
     @Column(name = "status")
     private Boolean status;
 
-    // public void pagar() {
-    //     this.status = true;
-    //     this.dataPagamento = Instant.now();
-    // }
+    
 
 }

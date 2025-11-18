@@ -42,7 +42,6 @@ public class Evento {
     @Column(precision = 10, scale = 2)
     private BigDecimal preco;
     
-    //  Muitos usuários podem estar associados a muitos eventos
     @ManyToMany
     @JoinTable(
         name = "usuario_evento",

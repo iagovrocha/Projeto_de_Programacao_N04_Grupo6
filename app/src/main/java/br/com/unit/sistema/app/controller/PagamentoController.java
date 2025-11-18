@@ -30,7 +30,6 @@ public class PagamentoController {
     public ResponseEntity<PagamentoCreateDTO> criarPagamento(@RequestBody @Valid PagamentoCreateDTO dados) {
         pagamentosService.create(dados);
         return new ResponseEntity<>(HttpStatus.CREATED);
-        //Criar uma notificacao do tipo AVISO
     }
 
     @GetMapping
@@ -41,11 +40,7 @@ public class PagamentoController {
     @GetMapping("/{idUsuario}")
     public Page<PagamentosListagemDTO> listPagamentosByUsuario(@PathVariable Long idUsuario, @PageableDefault(size = 10) Pageable paginacao) {
         return pagamentosService.listPagamentosByUsuario(idUsuario, paginacao);
-        //Criar uma notificacao do tipo CONFIRMACAO
     }
 
-    // @PutMapping("/{id}")
-    // public void atualizarPagamento(@PathVariable Long id) {
-    //     pagamentosService.pagar(id);
-    // }
+    
 }

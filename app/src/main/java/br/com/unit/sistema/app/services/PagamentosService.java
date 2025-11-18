@@ -40,10 +40,5 @@ public class PagamentosService {
             .map(PagamentosListagemDTO::new);
     }
 
-    // @Transactional
-    // public void pagar(Long id) {
-    //     Pagamentos pagamento = repositorys.findById(id)
-    //         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pagamento não encontrado"));
-    //     pagamento.pagar();
-    // }
+    
 }

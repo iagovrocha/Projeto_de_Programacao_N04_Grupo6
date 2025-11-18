@@ -52,18 +52,17 @@ public class InscricaoService {
         PagamentoCreateDTO pagamentoDTO = new PagamentoCreateDTO(usuario.getId(), valorDouble);
         pagamentosService.create(pagamentoDTO);
 
-        // Gerar notificação de confirmação de inscrição
         NotificacaoDTO notificacaoDTO = new NotificacaoDTO(evento, usuario.getId(), Tipo.CONFIRMACAO);
         notificacaoService.salvarNotificacao(notificacaoDTO);
 
         return new InscricaoResponseDTO(
-            null, // ID do pagamento não é retornado pelo método create
+            null,
             usuario.getId(),
             usuario.getNome(),
             evento.getId(),
             evento.getNome(),
             valorEvento,
-            "CONFIRMADO", // Status padrão definido no construtor de Pagamentos
+            "CONFIRMADO",
             "Inscrição realizada com sucesso!"
         );
     }

@@ -80,8 +80,6 @@ public class NotificacaoService{
     }
 
 
-    //GET
-    //exibe todas as notificações registradas
     @Transactional(readOnly = true)
     public ResponseEntity coletarNotificacao(long id,@PageableDefault Pageable paginacao){
         if(!userRepository.existsById(id)){
@@ -95,7 +93,6 @@ public class NotificacaoService{
         return ResponseEntity.ok(repository.findAll(paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao)));
     }
 
-    //exibe uma notificação específica
     @Transactional(readOnly = true)
     public ResponseEntity exibirNotificacaoEspecifica(long id){
         if (repository.existsById(id) == false){
@@ -106,7 +103,6 @@ public class NotificacaoService{
         return ResponseEntity.ok(notificacao);
     }
 
-    //exibir todas as notificacoes daquele usuario
     @Transactional(readOnly = true)
     public ResponseEntity coletarNotificacaoUsuario(long id, @PageableDefault Pageable paginacao){
         if (userRepository.existsById(id) == false){
@@ -118,7 +114,6 @@ public class NotificacaoService{
             notificacao.isLida())));
     }
 
-    //Exibe notificacoes novas do usuario com preferencia
     public Page<NotificacaoUsuario> gerarPageNotificacaoUsuario(ArrayList<NotificacaoUsuario> lista, Pageable paginacao){
         int comeco = (int) paginacao.getOffset();
         int fim = Math.min(comeco   + paginacao.getPageSize(), lista.size());
@@ -164,7 +159,6 @@ public class NotificacaoService{
             notificacao.isLida())));
     }
 
-    //coleta notificações que um usuário enviou
     @Transactional(readOnly = true)
     public ResponseEntity coletarNotificacaoEnviadas(long id, @PageableDefault Pageable paginacao){
         if (userRepository.existsById(id) == false){
@@ -176,14 +170,11 @@ public class NotificacaoService{
         return ResponseEntity.ok(repository.findByIdUser(id, paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao)));
     }
 
-    //filtra notificação pelo tipo
     @Transactional(readOnly = true)
     public Page<NotificacaoListagemDTO> filtrarNotificacaoTipo(Tipo tipo, @PageableDefault Pageable paginacao){
         return repository.findByTipo(tipo, paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao));
     }
 
-    //POST
-    //registra uma nova notificacao
     @Transactional
     public ResponseEntity salvarNotificacao(@Valid NotificacaoDTO dados){
        try{ 
@@ -211,8 +202,6 @@ public class NotificacaoService{
        }
     }
 
-    //PUT
-    //marca uma notificacao como lida
     @Transactional
     public ResponseEntity atualizarNotificacao(@Valid NotificacaoLidaDTO dados){
         try{
@@ -229,7 +218,6 @@ public class NotificacaoService{
         }
     }
 
-    //atualiza tag de uma notificacao, tanto para adição tanto para troca
     @Transactional
     public ResponseEntity atualizarTag(@Valid NotificacaoLidaDTO dados){
         try{
@@ -250,8 +238,6 @@ public class NotificacaoService{
         }
     }
 
-    //DELETE
-    //apaga uma notificacao especifica
     @Transactional
     public ResponseEntity apagarNotificacao(NotificacaoDeletarDTO dados){
         try{
