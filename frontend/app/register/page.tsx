@@ -60,19 +60,19 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
       <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg border border-border">
-        <h1 className="text-3xl font-bold text-center mb-2 text-foreground">Create Account</h1>
-        <p className="text-center text-muted-foreground mb-8 text-sm">Nova Aurora Events</p>
+        <h1 className="text-3xl font-bold text-center mb-2 text-foreground">Criar Conta</h1>
+        <p className="text-center text-muted-foreground mb-8 text-sm">Eventos Nova Aurora</p>
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Nome completo</label>
             <input
               type="text"
               name="nome"
               value={formData.nome}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Your Name"
+              placeholder="Seu nome"
               required
             />
           </div>
@@ -91,7 +91,7 @@ export default function Register() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Senha</label>
             <input
               type="password"
               name="senha"
@@ -103,8 +103,8 @@ export default function Register() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-2">User Type</label>
+                <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Tipo de usuário</label>
             <select
               name="role"
               value={formData.role}
@@ -128,14 +128,14 @@ export default function Register() {
             disabled={loading}
             className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 disabled:opacity-50"
           >
-            {loading ? "Creating account..." : "Register"}
+            {loading ? "Criando conta..." : "Registrar"}
           </button>
         </form>
 
         <p className="text-center mt-6 text-sm text-muted-foreground">
-          Already have an account?{" "}
+          Já tem uma conta?{" "}
           <Link href="/login" className="text-primary hover:underline">
-            Login here
+            Faça login aqui
           </Link>
         </p>
       </div>

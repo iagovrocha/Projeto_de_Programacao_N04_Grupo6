@@ -151,17 +151,17 @@ export default function NotificationsPage() {
         <Navbar userName={user.nome} />
         <main className="flex-1 overflow-auto p-6 bg-background">
           <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-            <h2 className="text-2xl font-bold text-foreground mb-6">All Notifications</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Todas as Notificações</h2>
 
             <div className="flex gap-4 mb-6 flex-wrap">
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Filter by Type</label>
+                <label className="block text-sm font-medium text-foreground mb-2">Filtrar por Tipo</label>
                 <select
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value)}
                   className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
                 >
-                  <option value="ALL">All Types</option>
+                  <option value="ALL">Todos os Tipos</option>
                   <option value="LEMBRETE">Lembrete</option>
                   <option value="ALERTA">Alerta</option>
                   <option value="CONFIRMACAO">Confirmação</option>
@@ -170,16 +170,16 @@ export default function NotificationsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-foreground mb-2">Filter by Tag</label>
+                <label className="block text-sm font-medium text-foreground mb-2">Filtrar por Tag</label>
                 <select
                   value={filterTag}
                   onChange={(e) => setFilterTag(e.target.value)}
                   className="px-4 py-2 border border-border rounded-lg bg-background text-foreground"
                 >
-                  <option value="ALL">All Tags</option>
-                  <option value="URGENT">Urgent</option>
-                  <option value="REMINDER">Reminder</option>
-                  <option value="INFO">Info</option>
+                  <option value="ALL">Todas as Tags</option>
+                  <option value="URGENT">Urgente</option>
+                  <option value="REMINDER">Lembrete</option>
+                  <option value="INFO">Informação</option>
                 </select>
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function NotificationsPage() {
                 )}
               </>
             ) : (
-              <p className="text-center text-muted-foreground py-12">No notifications found</p>
+              <p className="text-center text-muted-foreground py-12">Nenhuma notificação encontrada</p>
             )}
           </div>
         </main>

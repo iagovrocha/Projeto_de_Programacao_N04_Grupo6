@@ -14,20 +14,20 @@ export default function Sidebar({ userType }: SidebarProps) {
   const pathname = usePathname()
 
   const menuItems = [
-    { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/notifications", label: "Notifications", icon: Bell },
-    { href: "/subscriptions", label: "My Events", icon: CheckCircle },
-    { href: "/events", label: "Browse Events", icon: Calendar },
+    { href: "/dashboard", label: "Painel", icon: Home },
+    { href: "/notifications", label: "Notificações", icon: Bell },
+    { href: "/subscriptions", label: "Meus Eventos", icon: CheckCircle },
+    { href: "/events", label: "Eventos", icon: Calendar },
   ]
 
   const organizerItems = [
-    { href: "/create-event", label: "Create Event", icon: Plus },
-    { href: "/manage-events", label: "Manage Events", icon: Settings },
+    { href: "/create-event", label: "Criar Evento", icon: Plus },
+    { href: "/manage-events", label: "Gerenciar Eventos", icon: Settings },
   ]
 
   const adminItems = [
-    { href: "/admin/notifications", label: "All Notifications", icon: Bell },
-    { href: "/admin/events", label: "All Events", icon: Calendar },
+    { href: "/admin/notifications", label: "Todas as Notificações", icon: Bell },
+    { href: "/admin/events", label: "Todos os Eventos", icon: Calendar },
   ]
 
   const isActive = (href: string) => pathname === href
@@ -133,7 +133,7 @@ export default function Sidebar({ userType }: SidebarProps) {
           }`}
         >
           <LogOut size={20} />
-          {!isMinimized && <span className="text-sm">Logout</span>}
+          {!isMinimized && <span className="text-sm">Sair</span>}
         </button>
       </div>
     </aside>

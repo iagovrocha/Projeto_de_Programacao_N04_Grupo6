@@ -104,7 +104,7 @@ export default function Dashboard() {
         <main className="flex-1 overflow-auto p-6 bg-background">
           <div className="grid grid-cols-1 gap-6">
             <div className="bg-card rounded-lg p-6 border border-border shadow-sm">
-              <h2 className="text-2xl font-bold text-foreground mb-4">Latest Notifications</h2>
+              <h2 className="text-2xl font-bold text-foreground mb-4">Últimas Notificações</h2>
               {notifications.length > 0 ? (
                 <div className="space-y-3">
                   {notifications.map((notif) => (
@@ -160,7 +160,7 @@ export default function Dashboard() {
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground">No notifications yet</p>
+                <p className="text-muted-foreground">Nenhuma notificação ainda</p>
               )}
             </div>
 

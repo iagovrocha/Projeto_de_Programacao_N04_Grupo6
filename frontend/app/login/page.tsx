@@ -33,7 +33,7 @@ export default function Login() {
       localStorage.setItem("user", JSON.stringify(data))
       router.push("/dashboard")
     } catch (err) {
-      setError("Invalid email or password")
+      setError("Email ou senha inválidos")
       console.error("Login error:", err)
     } finally {
       setLoading(false)
@@ -44,7 +44,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-secondary/20">
       <div className="w-full max-w-md p-8 bg-card rounded-lg shadow-lg border border-border">
         <h1 className="text-3xl font-bold text-center mb-2 text-foreground">Nova Aurora</h1>
-        <p className="text-center text-muted-foreground mb-8 text-sm">Event Management System</p>
+        <p className="text-center text-muted-foreground mb-8 text-sm">Sistema de Gerenciamento de Eventos</p>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
@@ -54,13 +54,13 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="your@email.com"
+              placeholder="seu@email.com"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Senha</label>
             <input
               type="senha"
               value={senha}
@@ -82,14 +82,14 @@ export default function Login() {
             disabled={loading}
             className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 disabled:opacity-50"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Conectando..." : "Entrar"}
           </button>
         </form>
 
         <p className="text-center mt-6 text-sm text-muted-foreground">
-          Don't have an account?{" "}
+          Não tem uma conta?{" "}
           <Link href="/register" className="text-primary hover:underline">
-            Register here
+            Cadastre-se aqui
           </Link>
         </p>
       </div>

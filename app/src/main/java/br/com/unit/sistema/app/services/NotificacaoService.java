@@ -84,29 +84,15 @@ public class NotificacaoService{
     //exibe todas as notificações registradas
     @Transactional(readOnly = true)
     public ResponseEntity coletarNotificacao(long id,@PageableDefault Pageable paginacao){
+        if(!userRepository.existsById(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
+        }
+        
         if(userRepository.getReferenceById(id).getRole() != Role.ADMINISTRADOR){
                 return ResponseEntity.badRequest().build();
         }
         
         return ResponseEntity.ok(repository.findAll(paginacao).map(notificacao -> new  NotificacaoListagemDTO(notificacao)));
-    }
-
-    //GET ALL - novo método que valida o usuário e retorna todas as notificações
-    @Transactional(readOnly = true)
-    public ResponseEntity buscarTodasNotificacoes(long idUsuario, @PageableDefault Pageable paginacao){
-        // Verifica se o usuário existe
-        if(!userRepository.existsById(idUsuario)){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
-        }
-        
-        // Busca o usuário e valida se é ADMINISTRADOR
-        UsuarioEntidade usuario = userRepository.getReferenceById(idUsuario);
-        if(usuario.getRole() != Role.ADMINISTRADOR){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acesso negado. Apenas administradores podem acessar este recurso.");
-        }
-        
-        // Retorna todas as notificações paginadas
-        return ResponseEntity.ok(repository.findAll(paginacao).map(notificacao -> new NotificacaoListagemDTO(notificacao)));
     }
 
     //exibe uma notificação específica
